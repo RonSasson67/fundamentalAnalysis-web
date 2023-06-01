@@ -1,11 +1,13 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Grid } from "@mui/material";
-import ChartIndexStore from "./Store/ChartIndexStore";
 import { useEffect } from "react";
-import { GenerateDataForCharts } from "./Utils/MockGenereator";
 import { observer } from "mobx-react";
-import ChartSliderWrapper from "./ChartSlider/ChartSliderWrapper";
+import { GenerateDataForCharts } from "../Utils/MockGenereator";
+import CharLineExample from "./Component/ChartLineExample";
+import SliderExample from "./Component/SliderExample";
+import ChartIndexStore from "../Store/ChartIndexStore";
+
 
 const darkTheme = createTheme({
   palette: {
@@ -13,7 +15,7 @@ const darkTheme = createTheme({
   },
 });
 
-const App = observer(() => {
+const ChartSliderWrapper = observer(() => {
   // initialize the data for the charts with ChartIndexSotre and GenerateDataForCharts
   const chartIndexStore = new ChartIndexStore();
   chartIndexStore.setData(GenerateDataForCharts());
@@ -36,11 +38,13 @@ const App = observer(() => {
         sx={{ minHeight: "100vh" }}
       >
         <Grid item xs={3}>
-          <ChartSliderWrapper />
+          <h1>PE</h1>
+          <CharLineExample chartIndexStore={chartIndexStore} />
+          <SliderExample chartIndexStore={chartIndexStore} />
         </Grid>
       </Grid>
     </ThemeProvider>
   );
 })  
 
-export default App;
+export default ChartSliderWrapper;
