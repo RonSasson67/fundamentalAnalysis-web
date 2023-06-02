@@ -14,14 +14,8 @@ function valuetext(value: number) {
 }
 
 function MarksAdapter(jsonData: any) {
-  // Sort the JSON data by date
-  var sortedData = jsonData.slice().sort((a: any, b: any) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return dateA.getTime() - dateB.getTime();
-  });
   // Transform sorted data into marks format
-  var marks = sortedData.map((data: any, index: Number) => ({
+  var marks = jsonData.map((data: any, index: Number) => ({
     value: index,
     label: data.date,
   }));
@@ -38,12 +32,19 @@ function valueLabelFormat(
 }
 
 const IndexSlider = observer(({ chartIndexStore }: SliderProps) => {
-  const [value, setValue] = React.useState<number[]>([0, chartIndexStore.getData.length - 1]);
+  const [value, setValue] = React.useState<number[]>([
+    0,
+    chartIndexStore.getData.length - 1,
+  ]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
-    chartIndexStore.setMinIndex(typeof newValue === "number" ? newValue : newValue[0]);
-    chartIndexStore.setMaxIndex(typeof newValue === "number" ? newValue : newValue[1]);
+    chartIndexStore.setMinIndex(
+      typeof newValue === "number" ? newValue : newValue[0]
+    );
+    chartIndexStore.setMaxIndex(
+      typeof newValue === "number" ? newValue : newValue[1]
+    );
   };
 
   const marks = MarksAdapter(chartIndexStore.getData);

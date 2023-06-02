@@ -1,11 +1,25 @@
-// function that get array and seperate it evently to number user input
-function SpreadArrayEvenly(marks: any[], numToSpread: number) {
-  var newArray = [];
-  var step = Math.floor(marks.length / numToSpread);
-  for (var i = 0; i < marks.length; i += step) {
-    newArray.push(marks[i]);
+function SpreadArrayEvenly(array: any[], numberOfIndex: number) {
+  var spreadArray = [];
+  var arrayLength = array.length;
+
+  if (numberOfIndex > arrayLength) {
+    numberOfIndex = arrayLength;
   }
-  return newArray;
+
+  var spreadIndex = Math.ceil(arrayLength / numberOfIndex);
+  var index = 0;
+
+  for (var i = 0; i < numberOfIndex; i++) {
+    spreadArray.push(array[index]);
+    index += spreadIndex;
+  }
+
+  //if the array is not divide evenly add the last index
+  if (spreadArray.length >= numberOfIndex) {
+    spreadArray.push(array[arrayLength - 1]);
+  }
+
+  return spreadArray;
 }
 
 //function that get array and return only the index that between minIndex and maxIndex from ChartIndexStore
