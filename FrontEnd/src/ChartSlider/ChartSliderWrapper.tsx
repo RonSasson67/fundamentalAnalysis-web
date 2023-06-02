@@ -1,33 +1,31 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import { Grid } from "@mui/material";
 import { useEffect } from "react";
 import { observer } from "mobx-react";
-import { GenerateDataForCharts } from "../Utils/MockGenereator";
-import CharLineExample from "./Component/ChartLineExample";
+import LineChartIndex from "./Component/LineChartIndex";
 import IndexSlider from "./Component/IndexSlider";
 import ChartIndexStore from "../Store/ChartIndexStore";
+import RatioType from "../Entity/RatioType";
+import { GetRatioData } from "../api/RatioApi";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+// props for ChartSliderWrapper
+type ChartSliderWrapperProps = {
+  symbol: string;
+  ratioType: RatioType;
+};
 
-const ChartSliderWrapper = observer(() => {
-  // initialize the data for the charts with ChartIndexSotre and GenerateDataForCharts
-  const chartIndexStore = new ChartIndexStore();
-  chartIndexStore.setData(GenerateDataForCharts());
-  chartIndexStore.setMaxIndex(chartIndexStore.getData.length - 1);
-
-  useEffect(() => {
-    chartIndexStore.setMinIndex(0);
+const ChartSliderWrapper = observer(
+  ({ symbol, ratioType }: ChartSliderWrapperProps) => {
+    // initialize the data for the charts with ChartIndexSotre and GenerateDataForCharts
+    const chartIndexStore = new ChartIndexStore();
+    chartIndexStore.setData(GetRatioData(ratioType, symbol) as any[]);
     chartIndexStore.setMaxIndex(chartIndexStore.getData.length - 1);
-  }, []);
 
-  return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
+    useEffect(() => {
+      chartIndexStore.setMinIndex(0);
+      chartIndexStore.setMaxIndex(chartIndexStore.getData.length - 1);
+    }, []);
+
+    return (
       <Grid
         container
         spacing={0}
@@ -37,13 +35,13 @@ const ChartSliderWrapper = observer(() => {
         sx={{ minHeight: "100vh" }}
       >
         <Grid item xs={3}>
-          <h1>PE</h1>
-          <CharLineExample chartIndexStore={chartIndexStore} />
+          <h1>{ratioType}</h1>
+          <LineChartIndex chartIndexStore={chartIndexStore} />
           <IndexSlider chartIndexStore={chartIndexStore} />
         </Grid>
       </Grid>
-    </ThemeProvider>
-  );
-});
+    );
+  }
+);
 
 export default ChartSliderWrapper;

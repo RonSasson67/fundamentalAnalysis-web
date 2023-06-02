@@ -11,21 +11,41 @@ function CustomTooltip({
   label,
   active,
 }: TooltipProps<ValueType, NameType>) {
-  var boxSx = {
-    bgcolor: "background.paper",
-    m: 1,
-    border: 1,
-    style: { width: "5rem", height: "5rem" },
-  };
+  console.log(payload);
   if (active) {
+    // return every item in the payload as a box with the keydata and value and the label in stroke color
+
     return (
-      <Box sx={boxSx}>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+      <Box
+        sx={{
+          backgroundColor: "background.paper",
+          p: 1,
+          borderRadius: 1,
+          border: "1px solid #ddd",
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">
           {label}
         </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {payload?.[0].value}
-        </Typography>
+        {payload?.map((item, index) => (
+          <Typography
+            key={index}
+            variant="body2"
+            color={item.color}
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <Box
+              sx={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                bgcolor: item.color,
+                mr: 1,
+              }}
+            />
+            {item.name}: {item.value}
+          </Typography>
+        ))}
       </Box>
     );
   }

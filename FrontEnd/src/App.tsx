@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { GenerateDataForCharts } from "./Utils/MockGenereator";
 import { observer } from "mobx-react";
 import ChartSliderWrapper from "./ChartSlider/ChartSliderWrapper";
+import RatioType from "./Entity/RatioType";
 
 const darkTheme = createTheme({
   palette: {
@@ -14,16 +15,6 @@ const darkTheme = createTheme({
 });
 
 const App = observer(() => {
-  // initialize the data for the charts with ChartIndexSotre and GenerateDataForCharts
-  const chartIndexStore = new ChartIndexStore();
-  chartIndexStore.setData(GenerateDataForCharts());
-  chartIndexStore.setMaxIndex(chartIndexStore.getData.length - 1);
-
-  useEffect(() => {
-    chartIndexStore.setMinIndex(0);
-    chartIndexStore.setMaxIndex(chartIndexStore.getData.length - 1);
-  }, []);
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -36,11 +27,11 @@ const App = observer(() => {
         sx={{ minHeight: "100vh" }}
       >
         <Grid item xs={3}>
-          <ChartSliderWrapper />
+          <ChartSliderWrapper symbol="AAPL" ratioType={RatioType.PE} />
         </Grid>
       </Grid>
     </ThemeProvider>
   );
-})  
+});
 
 export default App;

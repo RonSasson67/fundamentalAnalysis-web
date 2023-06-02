@@ -13,7 +13,7 @@ function valuetext(value: number) {
   return `${value}`;
 }
 
-function MarksAdapter(jsonData: any) {
+function MarksAdapter(jsonData: any[]) {
   // Transform sorted data into marks format
   var marks = jsonData.map((data: any, index: Number) => ({
     value: index,

@@ -2,41 +2,41 @@ import { makeAutoObservable } from "mobx";
 import { GetIndexData } from "../Utils/ArraysLogic";
 
 class ChartIndexStore {
-    minIndex = 0;
-    maxIndex = 0;
-    data: any[] = [];
-    
-    constructor() {
-        makeAutoObservable(this)
-    }
+  minIndex = 0;
+  maxIndex = 0;
+  data: any[] = [];
 
-    setMinIndex(index: number) {
-        this.minIndex = index;
-    }   
+  constructor() {
+    makeAutoObservable(this);
+  }
 
-    setMaxIndex(index: number) {
-        this.maxIndex = index;
-    }
-    
-    setData(data: any[]) {
-        this.data = data;
-    }
+  setMinIndex(index: number) {
+    this.minIndex = index;
+  }
 
-    get getMinIndex() {
-        return this.minIndex;
-    }
+  setMaxIndex(index: number) {
+    this.maxIndex = index;
+  }
 
-    get getMaxIndex() {
-        return this.maxIndex;
-    }
+  setData(data: any[]) {
+    this.data = data;
+  }
 
-    get getData() {
-        return this.data;
-    }
+  get getMinIndex() {
+    return this.minIndex;
+  }
 
-    get getIndexData() {
-        return GetIndexData(this.data, this.minIndex, this.maxIndex);
-    }
+  get getMaxIndex() {
+    return this.maxIndex;
+  }
+
+  get getData() {
+    return this.data;
+  }
+
+  get getIndexData() {
+    return GetIndexData(this.data, this.minIndex, this.maxIndex);
+  }
 }
 
 export default ChartIndexStore;
