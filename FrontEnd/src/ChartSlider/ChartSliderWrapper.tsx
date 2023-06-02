@@ -32,7 +32,6 @@ const ChartSliderWrapper = observer(
         direction="column"
         alignItems="center"
         justifyContent="center"
-        sx={{ minHeight: "100vh" }}
       >
         <Grid item xs={3}>
           <h1>{ratioType}</h1>
