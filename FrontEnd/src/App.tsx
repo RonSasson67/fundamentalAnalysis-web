@@ -1,8 +1,9 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Grid } from "@mui/material";
-import CharLineExample, { GenerateData } from "./examples/ChartLineExample";
-import SliderExample from "./examples/SliderExample";
+import { Grid, Typography } from "@mui/material";
+import { observer } from "mobx-react";
+import ChartSliderWrapper from "./ChartSlider/ChartSliderWrapper";
+import RatioType from "./Entity/RatioType";
 
 const darkTheme = createTheme({
   palette: {
@@ -10,28 +11,59 @@ const darkTheme = createTheme({
   },
 });
 
-function App() {
-  var data = GenerateData();
+const App = observer(() => {
+  if (true) {
+    // create app that have a title in midle app of the page, and two charts with sliders in the middle of the page near the edges
+    return (
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Grid
+          container
+          spacing={0}
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Grid xs={12}>
+            <Typography variant="h3" align="center" sx={{ marginTop: "10rem" }}>
+              AAPL
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container spacing={4} marginTop="5rem">
+          <Grid xs={6} marginTop="0rem">
+            <ChartSliderWrapper symbol="AAPL" ratioType={RatioType.PE} />
+          </Grid>
+          <Grid xs={6} marginTop="0rem">
+            <ChartSliderWrapper
+              symbol="AAPL"
+              ratioType={RatioType.PToCashFlow}
+            />
+          </Grid>
+        </Grid>
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ minHeight: "100vh" }}
-      >
-        <Grid item xs={3}>
-          <h1>PE</h1>
-          <CharLineExample data={data} />
-          <SliderExample data={data} />
+      <Grid spacing={12}>
+        <Grid xs={12}>
+          <h1>Ratio Slider</h1>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={4} sx={{ minHeight: "100vh" }}>
+        <Grid xs={6}>
+          <ChartSliderWrapper symbol="AAPL" ratioType={RatioType.PE} />
+        </Grid>
+        <Grid xs={6}>
+          <ChartSliderWrapper symbol="AAPL" ratioType={RatioType.PToCashFlow} />
         </Grid>
       </Grid>
     </ThemeProvider>
   );
-}
+});
 
 export default App;
