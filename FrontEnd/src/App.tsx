@@ -11,6 +11,11 @@ const darkTheme = createTheme({
   },
 });
 
+//TODO: Add featch data from API to table
+//TODO: Add Form for table
+//TODO: Add logic if the parameter is good
+//TODO: Add logic to add note
+
 const App = observer(() => {
   return (
     <ThemeProvider theme={darkTheme}>
