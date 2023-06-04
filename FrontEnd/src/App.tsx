@@ -1,9 +1,9 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { observer } from "mobx-react";
-import ChartSliderWrapper from "./ChartSlider/ChartSliderWrapper";
-import RatioType from "./Entity/RatioType";
+import TableWrapper from "./Tabel/TabelWrapper";
+import MetricsType from "./Entity/MetricsType";
 
 const darkTheme = createTheme({
   palette: {
@@ -12,54 +12,18 @@ const darkTheme = createTheme({
 });
 
 const App = observer(() => {
-  if (true) {
-    // create app that have a title in midle app of the page, and two charts with sliders in the middle of the page near the edges
-    return (
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Grid
-          container
-          spacing={0}
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Grid xs={12}>
-            <Typography variant="h3" align="center" sx={{ marginTop: "10rem" }}>
-              AAPL
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container spacing={4} marginTop="5rem">
-          <Grid xs={6} marginTop="0rem">
-            <ChartSliderWrapper symbol="AAPL" ratioType={RatioType.PE} />
-          </Grid>
-          <Grid xs={6} marginTop="0rem">
-            <ChartSliderWrapper
-              symbol="AAPL"
-              ratioType={RatioType.PToCashFlow}
-            />
-          </Grid>
-        </Grid>
-      </ThemeProvider>
-    );
-  }
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Grid spacing={12}>
-        <Grid xs={12}>
-          <h1>Ratio Slider</h1>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={4} sx={{ minHeight: "100vh" }}>
-        <Grid xs={6}>
-          <ChartSliderWrapper symbol="AAPL" ratioType={RatioType.PE} />
-        </Grid>
-        <Grid xs={6}>
-          <ChartSliderWrapper symbol="AAPL" ratioType={RatioType.PToCashFlow} />
+      <Grid
+        container
+        spacing={0}
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Grid xs={3}>
+          <TableWrapper symbol="AAPL" metricsType={MetricsType.General} />
         </Grid>
       </Grid>
     </ThemeProvider>
