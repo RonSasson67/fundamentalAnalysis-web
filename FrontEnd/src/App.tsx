@@ -21,6 +21,7 @@ const App = observer(() => {
         direction="row"
         alignItems="center"
         justifyContent="center"
+        paddingTop={4}
       >
         <Grid xs={3}>
           <TableWrapper symbol="AAPL" metricsType={MetricsType.General} />
