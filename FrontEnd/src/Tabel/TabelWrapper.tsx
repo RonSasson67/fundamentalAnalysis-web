@@ -1,4 +1,3 @@
-import React from "react";
 import Box from "@mui/material/Box";
 import MuiBoxList from "./Component/MuiBoxList";
 import { Typography } from "@mui/material";
@@ -17,7 +16,7 @@ const splitList = (data: { key: string; value: string }[]) => {
   const secondHalf = data.slice(halfLength);
 
   if (data.length % 2 !== 0) {
-    secondHalf.push({ key: ":", value: ")" }); // Add an empty item to balance columns
+    // secondHalf.push({ key: "", value: ")" }); // Add an empty item to balance columns
   }
 
   return [firstHalf, secondHalf];
@@ -32,6 +31,7 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
       sx={{
         border: "1px solid #00B3E6",
         borderRadius: "50px", // Set a larger value to make the border more circular
+        width: "550px",
       }}
     >
       <Box
@@ -44,15 +44,19 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
         <Typography
           variant="h6"
           component="div"
-          sx={{
-            fontSize: "60px",
-            color: "#00B3E6",
-          }}
+          fontSize="60px"
+          color="#00B3E6"
         >
           {metricsType}
         </Typography>
       </Box>
-      <Box display="flex" justifyContent="space-between">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        paddingLeft={"20px"}
+        paddingRight={"20px"}
+        paddingBottom={2}
+      >
         <MuiBoxList items={list1} checkBoxStore={checkBoxStore} />
         <MuiBoxList items={list2} checkBoxStore={checkBoxStore} />
       </Box>
