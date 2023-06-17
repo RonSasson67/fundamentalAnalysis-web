@@ -4,27 +4,17 @@ import { Typography } from "@mui/material";
 import CheckBoxStore from "../Store/CheckBoxStore";
 import MetricsType from "../Entity/MetricsType";
 import GetMetricData from "../api/MetricsApi";
+import TextInputStore from "../Store/TextInputStore";
 
 interface TableWrapperProps {
   symbol: string;
   metricsType: MetricsType;
 }
 
-const splitList = (data: { key: string; value: string }[]) => {
-  const halfLength = Math.ceil(data.length / 2);
-  const firstHalf = data.slice(0, halfLength);
-  const secondHalf = data.slice(halfLength);
-
-  if (data.length % 2 !== 0) {
-    // secondHalf.push({ key: "", value: ")" }); // Add an empty item to balance columns
-  }
-
-  return [firstHalf, secondHalf];
-};
-
 function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
-  const [list1, list2] = splitList(GetMetricData(metricsType, symbol));
+  const list = GetMetricData(metricsType, symbol);
   const checkBoxStore = new CheckBoxStore();
+  const textInputStore = new TextInputStore();
 
   return (
     <Box
@@ -32,6 +22,9 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
         border: "1px solid #00B3E6",
         borderRadius: "50px", // Set a larger value to make the border more circular
         width: "550px",
+        height: "800px",
+        padding: "10px",
+        overflow: "hidden",
       }}
     >
       <Box
@@ -50,15 +43,12 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
           {metricsType}
         </Typography>
       </Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        paddingLeft={"20px"}
-        paddingRight={"20px"}
-        paddingBottom={2}
-      >
-        <MuiBoxList items={list1} checkBoxStore={checkBoxStore} />
-        <MuiBoxList items={list2} checkBoxStore={checkBoxStore} />
+      <Box height="90%">
+        <MuiBoxList
+          items={list}
+          checkBoxStore={checkBoxStore}
+          textInputStore={textInputStore}
+        />
       </Box>
     </Box>
   );
