@@ -4,6 +4,8 @@ import CheckBoxStore from "../../Store/CheckBoxStore";
 import TextField from "@mui/material/TextField";
 import GlowingText from "../../Utils/Style/GlowingText";
 import TextInputStore from "../../Store/TextInputStore";
+import GppBadIcon from "@mui/icons-material/GppBad";
+import GppGoodIcon from "@mui/icons-material/GppGood";
 import { useEffect } from "react";
 
 type BoxContentProps = {
@@ -37,6 +39,8 @@ export const BoxContent = observer(
           {value}
         </Typography>
         <Checkbox
+          icon={<GppBadIcon />}
+          checkedIcon={<GppGoodIcon />}
           checked={checkBoxStore.isChecked(title)}
           onChange={() => checkBoxStore.toggle(title)}
         />
