@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
-import { Checkbox, Typography, Box } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import CheckBoxStore from "../../Store/CheckBoxStore";
 import TextField from "@mui/material/TextField";
-import GlowingText from "../../Utils/Style/GlowingText";
+import "../TabelWrapper.css";
 import TextInputStore from "../../Store/TextInputStore";
 import GppBadIcon from "@mui/icons-material/GppBad";
 import GppGoodIcon from "@mui/icons-material/GppGood";
@@ -21,22 +21,9 @@ export const BoxContent = observer(
       textInputStore.addInput(title);
     }, []);
     return (
-      <Box
-        flexDirection="row"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        padding="5%"
-        height="75px"
-        border="2px solid #00B3E6"
-        borderRadius="15px"
-      >
-        <Typography width="25%" className={GlowingText().glowingText}>
-          {title}
-        </Typography>
-        <Typography width="25%" fontSize="16px">
-          {value}
-        </Typography>
+      <div className="box-content">
+        <p className="box-title box-text">{title}</p>
+        <p className="box-text">{value}</p>
         <Checkbox
           icon={<GppBadIcon />}
           checkedIcon={<GppGoodIcon />}
@@ -50,7 +37,7 @@ export const BoxContent = observer(
           key={title}
           onChange={(e) => textInputStore.updateInput(title, e.target.value)}
         />
-      </Box>
+      </div>
     );
   }
 );
