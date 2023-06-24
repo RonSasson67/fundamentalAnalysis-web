@@ -52,7 +52,7 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
           {metricsType}
         </Typography>
       </Box>
-      <Box height="90%">
+      <Box height="100%">
         <MuiBoxList
           financialData={data as FinancialData[]}
           checkBoxStore={checkBoxStore}
