@@ -4,6 +4,7 @@ import { Grid } from "@mui/material";
 import { observer } from "mobx-react";
 import TableWrapper from "./Tabel/TabelWrapper";
 import MetricsType from "./Entity/MetricsType";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const darkTheme = createTheme({
   palette: {
@@ -11,23 +12,27 @@ const darkTheme = createTheme({
   },
 });
 
+const queryClient = new QueryClient();
+
 const App = observer(() => {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <Grid
-        container
-        spacing={0}
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        paddingTop={4}
-      >
-        <Grid xs={3}>
-          <TableWrapper symbol="AAPL" metricsType={MetricsType.General} />
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Grid
+          container
+          spacing={0}
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          paddingTop={4}
+        >
+          <Grid xs={3}>
+            <TableWrapper symbol="AAPL" metricsType={MetricsType.General} />
+          </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 });
 

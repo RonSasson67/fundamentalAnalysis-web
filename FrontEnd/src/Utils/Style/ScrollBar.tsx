@@ -2,7 +2,6 @@ import { makeStyles } from "@mui/styles";
 
 const ScrollBar = makeStyles({
   scrollBox: {
-    height: "300px", // Set the desired height for the scrollable area
     overflowY: "auto", // Enable vertical scrolling
     "&::-webkit-scrollbar": {
       width: "8px", // Set the width of the scrollbar

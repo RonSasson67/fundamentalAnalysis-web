@@ -4,27 +4,28 @@ import { observer } from "mobx-react";
 import BoxContent from "./BoxContent";
 import ScrollBar from "../../Utils/Style/ScrollBar";
 import TextInputStore from "../../Store/TextInputStore";
+import { FinancialData } from "../../Entity/FinancialData.interface.ts";
 
 interface BoxListProps {
-  items: { key: string; value: string }[];
+  financialData: FinancialData[];
   checkBoxStore: CheckBoxStore;
   textInputStore: TextInputStore;
 }
 
 const MuiBoxList = observer(
-  ({ items, checkBoxStore, textInputStore }: BoxListProps) => {
+  ({ financialData, checkBoxStore, textInputStore }: BoxListProps) => {
     return (
       <Box
-        height="100%"
+        height="90%"
         paddingLeft={"20px"}
         paddingRight={"20px"}
         paddingBottom={2}
         className={ScrollBar().scrollBox}
       >
-        {items.map((entry) => (
-          <Box width="100%" marginBottom="10px" key={entry.key}>
+        {financialData.map((entry) => (
+          <Box width="100%" marginBottom="10px" key={entry.title}>
             <BoxContent
-              title={entry.key}
+              title={entry.title}
               value={entry.value}
               checkBoxStore={checkBoxStore}
               textInputStore={textInputStore}
