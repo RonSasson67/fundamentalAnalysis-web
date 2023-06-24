@@ -5,6 +5,8 @@ import { observer } from "mobx-react";
 import TableWrapper from "./Tabel/TabelWrapper";
 import MetricsType from "./Entity/MetricsType";
 import { QueryClient, QueryClientProvider } from "react-query";
+import "./App.css";
+import { useState } from "react";
 
 const darkTheme = createTheme({
   palette: {
@@ -15,22 +17,25 @@ const darkTheme = createTheme({
 const queryClient = new QueryClient();
 
 const App = observer(() => {
+  const [stage, setStage] = useState(0);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <Grid
-          container
-          spacing={0}
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          paddingTop={4}
-        >
-          <Grid xs={3}>
-            <TableWrapper symbol="AAPL" metricsType={MetricsType.General} />
-          </Grid>
-        </Grid>
+
+        <div className="App">
+          <button onClick={() => setStage((prevStage) => prevStage + 1)}>
+            change circle
+          </button>
+          <div
+            className="circle"
+            style={{ filter: `blur(${((stage * 50) % 600) + 30}px)` }}
+          />
+          <div className="content">
+            <TableWrapper symbol="META" metricsType={MetricsType.General} />
+          </div>
+        </div>
       </ThemeProvider>
     </QueryClientProvider>
   );
