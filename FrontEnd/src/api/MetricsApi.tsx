@@ -1,35 +1,33 @@
 import MetricsType from "../Entity/MetricsType";
-import { GenerateDataForTabel } from "../Utils/MockGenereator";
+import { FinancialData } from "../../../BackEnd/fundamental-analysis-backend/src/company-metrics/interface/FinancialData.interface";
+import { useQuery, UseQueryResult } from "react-query";
+import axios from "axios";
 
-function GetMetricData(metricsType: MetricsType, symbol: string) {
-  switch (metricsType) {
+const mapMetricTypeToUrl = (metricType: MetricsType) => {
+  const url = "http://localhost:3000/metrics/";
+  switch (metricType) {
     case MetricsType.General:
-      return GetGeneralData(symbol);
+      return `${url}overview`;
     case MetricsType.Valuation:
-      return GetValuationData(symbol);
+      return `${url}valuation`;
     case MetricsType.FinancialHealth:
-      return GetFinancialHealthData(symbol);
+      return `${url}financial-health`;
     case MetricsType.CashFlow:
-      return GetCashFlowData(symbol);
+      return `${url}cash-flow`;
     default:
-      return [];
+      return "";
   }
-}
+};
 
-function GetGeneralData(symbol: string) {
-  return GenerateDataForTabel();
-}
+const useGetMetricData = (
+  symbol: string,
+  metricType: MetricsType
+): UseQueryResult<FinancialData[]> => {
+  const url = `${mapMetricTypeToUrl(metricType)}/${symbol}`;
 
-function GetValuationData(symbol: string) {
-  return GenerateDataForTabel();
-}
+  return useQuery<FinancialData[]>(["metrics", symbol, metricType], () => {
+    return axios.get(url).then((res) => res.data);
+  });
+};
 
-function GetFinancialHealthData(symbol: string) {
-  return GenerateDataForTabel();
-}
-
-function GetCashFlowData(symbol: string) {
-  return GenerateDataForTabel();
-}
-
-export default GetMetricData;
+export { useGetMetricData };

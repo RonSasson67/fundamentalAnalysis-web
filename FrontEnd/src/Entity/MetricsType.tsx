@@ -1,5 +1,5 @@
 enum MetricsType {
-  General = "General",
+  General = "Over View",
   Valuation = "Valuation",
   FinancialHealth = "Financial Health",
   CashFlow = "Cash Flow",

@@ -3,8 +3,9 @@ import MuiBoxList from "./Component/MuiBoxList";
 import { Typography } from "@mui/material";
 import CheckBoxStore from "../Store/CheckBoxStore";
 import MetricsType from "../Entity/MetricsType";
-import GetMetricData from "../api/MetricsApi";
 import TextInputStore from "../Store/TextInputStore";
+import { useGetMetricData } from "../api/MetricsApi";
+import { FinancialData } from "../Entity/FinancialData.interface.ts";
 
 interface TableWrapperProps {
   symbol: string;
@@ -12,9 +13,17 @@ interface TableWrapperProps {
 }
 
 function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
-  const list = GetMetricData(metricsType, symbol);
+  const { data, isLoading, error } = useGetMetricData(symbol, metricsType);
   const checkBoxStore = new CheckBoxStore();
   const textInputStore = new TextInputStore();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Something went wrong: {error.message}</div>;
+  }
 
   return (
     <Box
@@ -45,7 +54,7 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
       </Box>
       <Box height="90%">
         <MuiBoxList
-          items={list}
+          financialData={data as FinancialData[]}
           checkBoxStore={checkBoxStore}
           textInputStore={textInputStore}
         />
