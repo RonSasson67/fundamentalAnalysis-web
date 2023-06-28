@@ -2,8 +2,8 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { observer } from "mobx-react";
-import ChartIndexStore from "../../Store/ChartIndexStore";
-import { SpreadArrayEvenly } from "../../Utils/ArraysLogic";
+import ChartIndexStore from "../../../Store/ChartIndexStore";
+import { SpreadArrayEvenly } from "../../../Utils/ArraysLogic";
 
 type SliderProps = {
   chartIndexStore: ChartIndexStore;

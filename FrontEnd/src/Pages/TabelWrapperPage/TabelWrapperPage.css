@@ -1,0 +1,29 @@
+.tabel-wrapper-page {
+    background-color: #040510;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.button {
+    margin: 10px;
+}
+
+.circle {
+    width: 30vh;
+    height: 30vh;
+    position: absolute;
+    background-color: rgb(33, 66, 116);
+    z-index: 1;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+
+.content {
+    height: 100vh;
+    width: 100vw;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 

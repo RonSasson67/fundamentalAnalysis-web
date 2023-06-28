@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { observer } from "mobx-react";
 import LineChartIndex from "./Component/LineChartIndex";
 import IndexSlider from "./Component/IndexSlider";
-import ChartIndexStore from "../Store/ChartIndexStore";
-import RatioType from "../Entity/RatioType";
-import { GetRatioData } from "../api/RatioApi";
+import RatioType from "../../Entity/RatioType";
+import ChartIndexStore from "../../Store/ChartIndexStore";
+import { GetRatioData } from "../../api/RatioApi";
 
 // props for ChartSliderWrapper
 type ChartSliderWrapperProps = {
