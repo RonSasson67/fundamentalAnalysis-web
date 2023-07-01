@@ -4,6 +4,7 @@ import { useState } from "react";
 import TableWrapper from "../../components/TabelWrapper/TabelWrapper";
 import MetricsType from "../../Entity/MetricsType";
 import "./TabelWrapperPage.css";
+import { useParams } from "react-router";
 
 const queryClient = new QueryClient();
 interface TableWrapperPageProps {
@@ -13,6 +14,7 @@ interface TableWrapperPageProps {
 
 const TabelWrapperPage = observer(({ symbol, metricsType }: TableWrapperPageProps) => {
   const [stage, setStage] = useState(0);
+  symbol = useParams<{ symbol: string }>().symbol || symbol;
 
   return (
     <QueryClientProvider client={queryClient}>

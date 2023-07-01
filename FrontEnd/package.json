@@ -19,6 +19,7 @@
     "@mui/styles": "^5.13.2",
     "@mui/x-data-grid": "^6.6.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@uidotdev/usehooks": "^2.0.1",
     "axios": "^1.4.0",
     "formik": "^2.2.9",
     "mobx": "^6.9.0",
@@ -27,6 +28,7 @@
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "recharts": "^2.6.2",
+    "use-debounce": "^9.0.4",
     "yup": "^1.1.1"
   },
   "devDependencies": {
