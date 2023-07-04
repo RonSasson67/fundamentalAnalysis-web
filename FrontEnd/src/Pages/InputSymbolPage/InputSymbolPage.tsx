@@ -4,8 +4,10 @@ import TextField from "@mui/material/TextField";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDebounce } from "use-debounce";
-import { getSymbolSearch } from "../../api/getSymbolSearch";
+import { ResultSymbol, getSymbolSearch } from "../../api/getSymbolSearch";
 import "./InputSymbolPage.css";
+
+const urlToNavigate = "/over-view/";
 
 export default function Asynchronous() {
   const [inputValue, setInputValue] = useState("");
@@ -53,8 +55,7 @@ export default function Asynchronous() {
         renderInput={InoutText}
         onChange={(event: any, value: ResultSymbol | null) => {
           if (value) {
-            // route to the next page
-            navigate(`/over-view/${value.symbol}`);
+            navigate(`${urlToNavigate}${value.symbol}`);
           }
         }}
       />
