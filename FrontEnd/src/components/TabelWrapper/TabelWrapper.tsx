@@ -22,7 +22,7 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
 
   if (error) {
     // cool error page with animation
-    return <div>Something went wrong: {error.message}</div>;
+    return <div>Something went wrong: {(error as any).message}</div>;
   }
 
   return (

@@ -1,4 +1,3 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { observer } from "mobx-react";
@@ -13,38 +12,25 @@ function valuetext(value: number) {
   return `${value}`;
 }
 
-function MarksAdapter(jsonData: any[]) {
+function MarksAdapter(jsonData: any[]): { value: number; label: string }[] {
   // Transform sorted data into marks format
   var marks = jsonData.map((data: any, index: Number) => ({
     value: index,
     label: data.date,
   }));
 
-  return marks;
+  return marks as { value: number; label: string }[];
 }
 
-function valueLabelFormat(
-  value: number,
-  marks: { value: number; label: string }[]
-) {
+function valueLabelFormat(value: number, marks: { value: number; label: string }[]) {
   const mark = marks[value];
   return mark ? mark.label : "";
 }
 
 const IndexSlider = observer(({ chartIndexStore }: SliderProps) => {
-  const [value, setValue] = React.useState<number[]>([
-    0,
-    chartIndexStore.getData.length - 1,
-  ]);
-
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[]);
-    chartIndexStore.setMinIndex(
-      typeof newValue === "number" ? newValue : newValue[0]
-    );
-    chartIndexStore.setMaxIndex(
-      typeof newValue === "number" ? newValue : newValue[1]
-    );
+  const handleChange = (_: Event, newValue: number | number[]) => {
+    chartIndexStore.setMinIndex(typeof newValue === "number" ? newValue : newValue[0]);
+    chartIndexStore.setMaxIndex(typeof newValue === "number" ? newValue : newValue[1]);
   };
 
   const marks = MarksAdapter(chartIndexStore.getData);

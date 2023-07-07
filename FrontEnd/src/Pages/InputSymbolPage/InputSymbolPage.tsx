@@ -12,7 +12,7 @@ const urlToNavigate = "/over-view/";
 export default function Asynchronous() {
   const [inputValue, setInputValue] = useState("");
   const [debouncedInputValue] = useDebounce(inputValue, 500);
-  const { data, isLoading, error } = getSymbolSearch(debouncedInputValue);
+  const { data, isLoading } = getSymbolSearch(debouncedInputValue);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -53,7 +53,7 @@ export default function Asynchronous() {
         options={data || []}
         loading={loading}
         renderInput={InoutText}
-        onChange={(event: any, value: ResultSymbol | null) => {
+        onChange={(_: any, value: ResultSymbol | null) => {
           if (value) {
             navigate(`${urlToNavigate}${value.symbol}`);
           }

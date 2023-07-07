@@ -24,7 +24,10 @@ const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
   const { renderComponent, handlePrev, handleNext, isNextDisabled, isPrevDisabled, isLastStep, currentStepIndex } =
     useFormikWizard({
       initialValues: { firstName: "", lastName: "" },
-      onSubmit: (values: any) => setFinished(true),
+      onSubmit: (values: any) => {
+        console.log(values);
+        setFinished(true);
+      },
       validateOnNext: true,
       activeStepIndex: 0,
       steps: steps,
