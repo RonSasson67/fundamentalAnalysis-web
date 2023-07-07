@@ -1,14 +1,6 @@
 import ChartIndexStore from "../../Store/ChartIndexStore";
 import CustomTooltip from "./CoustomToolTip";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { observer } from "mobx-react";
 import CustomTick from "./CustomTick ";
 
@@ -71,6 +63,7 @@ const LineChartIndex = observer(({ chartIndexStore }: ChartLineProps) => {
             stroke={barColors[index % barColors.length]}
             dot={false}
             strokeWidth={2}
+            key={index}
           />
         );
       })}

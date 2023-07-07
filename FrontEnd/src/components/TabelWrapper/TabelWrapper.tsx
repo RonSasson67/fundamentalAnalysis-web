@@ -10,11 +10,11 @@ interface TableWrapperProps {
   symbol: string;
   metricsType: MetricsType;
 }
+const checkBoxStore = new CheckBoxStore();
+const textInputStore = new TextInputStore();
 
 function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
   const { data, isLoading, error } = useGetMetricData(symbol, metricsType);
-  const checkBoxStore = new CheckBoxStore();
-  const textInputStore = new TextInputStore();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -30,11 +30,7 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
       <h1 className="tabel-title">
         {metricsType} - {symbol}
       </h1>
-      <BoxList
-        financialData={data as FinancialData[]}
-        checkBoxStore={checkBoxStore}
-        textInputStore={textInputStore}
-      />
+      <BoxList financialData={data as FinancialData[]} checkBoxStore={checkBoxStore} textInputStore={textInputStore} />
     </div>
   );
 }
