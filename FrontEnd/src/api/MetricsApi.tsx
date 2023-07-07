@@ -1,7 +1,7 @@
 import MetricsType from "../Entity/MetricsType";
-import { FinancialData } from "../../../BackEnd/fundamental-analysis-backend/src/company-metrics/interface/FinancialData.interface";
 import { useQuery, UseQueryResult } from "react-query";
 import axios from "axios";
+import { FinancialData } from "../Entity/FinancialData.interface.ts";
 
 const mapMetricTypeToUrl = (metricType: MetricsType) => {
   const url = "http://localhost:3000/metrics/";
@@ -19,10 +19,7 @@ const mapMetricTypeToUrl = (metricType: MetricsType) => {
   }
 };
 
-const useGetMetricData = (
-  symbol: string,
-  metricType: MetricsType
-): UseQueryResult<FinancialData[]> => {
+const useGetMetricData = (symbol: string, metricType: MetricsType): UseQueryResult<FinancialData[]> => {
   const url = `${mapMetricTypeToUrl(metricType)}/${symbol}`;
 
   return useQuery<FinancialData[]>(["metrics", symbol, metricType], () => {
