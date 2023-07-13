@@ -4,7 +4,7 @@ import axios from "axios";
 import { FinancialData } from "../Entity/FinancialData.interface.ts";
 
 const mapMetricTypeToUrl = (metricType: MetricsType) => {
-  const url = "http://localhost:3000/metrics/";
+  const url = `${"https://us-central1-personalstockanalysis.cloudfunctions.net/api"}/metrics/`;
   switch (metricType) {
     case MetricsType.General:
       return `${url}overview`;
