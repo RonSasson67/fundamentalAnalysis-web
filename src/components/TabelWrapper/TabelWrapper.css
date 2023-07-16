@@ -46,3 +46,20 @@ p.box-text {
     color: #d1cdcd;
     font-size: 1rem;
 }
+
+.scroll-bar {
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .scroll-bar::-webkit-scrollbar {
+    width: 4px; /* Set the width of the scrollbar */
+  }
+  
+  .scroll-bar::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Set the background color of the scrollbar track */
+  }
+  
+  .scroll-bar::-webkit-scrollbar-thumb {
+    background-color: #1B1B1B; /* Set the color of the scrollbar thumb */
+  }
+  
