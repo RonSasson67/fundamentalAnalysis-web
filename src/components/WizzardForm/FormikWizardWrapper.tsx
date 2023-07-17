@@ -5,6 +5,7 @@ import Stepper from "@mui/material/Stepper";
 import { Step, useFormikWizard } from "formik-wizard-form";
 import { useState } from "react";
 import "./FormikWizardWrapper.css";
+import { FormProvider, useForm } from "react-hook-form";
 
 export type FormikWizardWrapperProp = {
   formSteps: FormStep[];
@@ -17,6 +18,7 @@ type FormStep = {
 
 const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
   const [finished, setFinished] = useState(false);
+  const methods = useForm();
 
   //create steps from formSteps prop and add type of the varibale
   const steps: Step[] = formSteps.map((formStep) => formStep.step);
@@ -25,7 +27,7 @@ const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
     useFormikWizard({
       initialValues: { firstName: "", lastName: "" },
       onSubmit: (values: any) => {
-        console.log(values);
+        alert(JSON.stringify(methods.getValues()));
         setFinished(true);
       },
       validateOnNext: true,
@@ -43,7 +45,9 @@ const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
         ))}
       </Stepper>
       <div className="circle" style={{ filter: `blur(${((400 * 50) % 600) + 30}px)` }} />
-      <div className="render-component">{renderComponent()}</div>
+      <FormProvider {...methods}>
+        <div className="render-component">{renderComponent()}</div>
+      </FormProvider>
       <div className="buttons">
         <div className="previous-button-area">
           <Button color="primary" size="large" disabled={isPrevDisabled} onClick={handlePrev}>
