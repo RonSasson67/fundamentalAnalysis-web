@@ -37,42 +37,40 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
       <h1 className="tabel-title">
         {metricsType} - {symbol}
       </h1>
-      <div className={"list-container scroll-bar"}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {(data as FinancialData[]).map((entry: FinancialData) => (
-            <div className="box-content" key={entry.title}>
-              <p className="box-title box-text">{entry.title}</p>
-              <p className="box-text">{entry.value}</p>
-              <Controller
-                name={entry.title}
-                control={control}
-                defaultValue={false}
-                render={({ field }) => (
-                  <Checkbox
-                    icon={<GppBadIcon />}
-                    checkedIcon={<GppGoodIcon />}
-                    {...field} // Bind the checkbox with React Hook Form
-                  />
-                )}
-              />
-              <Controller
-                name={`${entry.title}_note`}
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    label="Note"
-                    variant="standard"
-                    id="standard-basic"
-                    {...field} // Bind the text field with React Hook Form
-                  />
-                )}
-              />
-            </div>
-          ))}
-          <button type="submit">Submit</button>
-        </form>
-      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="list-container scroll-bar">
+        {(data as FinancialData[]).map((entry: FinancialData) => (
+          <div className="box-content" key={entry.title}>
+            <p className="box-title box-text">{entry.title}</p>
+            <p className="box-text">{entry.value}</p>
+            <Controller
+              name={entry.title}
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <Checkbox
+                  icon={<GppBadIcon />}
+                  checkedIcon={<GppGoodIcon />}
+                  {...field} // Bind the checkbox with React Hook Form
+                />
+              )}
+            />
+            <Controller
+              name={`${entry.title}_note`}
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  label="Note"
+                  variant="standard"
+                  id="standard-basic"
+                  {...field} // Bind the text field with React Hook Form
+                />
+              )}
+            />
+          </div>
+        ))}
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 }
