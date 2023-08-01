@@ -26,20 +26,24 @@ const Layot = () => {
 const formikWizardWrapperProp: FormikWizardWrapperProp = {
   formSteps: [
     {
-      step: { component: () => <TabelWrapper symbol="META" metricsType={MetricsType.General} /> },
-      stepName: "META - General",
-    },
-    {
-      step: { component: () => <ChartSliderWrapper symbol="META" ratioType={RatioType.PE} /> },
-      stepName: "META - PE",
-    },
-    {
       step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.General} /> },
       stepName: "AAPL - General",
     },
     {
-      step: { component: () => <ChartSliderWrapper symbol="AAPL" ratioType={RatioType.PE} /> },
-      stepName: "AAPL - PE",
+      step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.Valuation} /> },
+      stepName: "AAPL - Valuation",
+    },
+    {
+      step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.FinancialHealth} /> },
+      stepName: "AAPL - FinancialHealth",
+    },
+    {
+      step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.Profitability} /> },
+      stepName: "AAPL - Profitability",
+    },
+    {
+      step: { component: () => <ChartSliderWrapper symbol="META" ratioType={RatioType.PE} /> },
+      stepName: "META - PE",
     },
   ],
 };

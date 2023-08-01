@@ -12,8 +12,8 @@ const mapMetricTypeToUrl = (metricType: MetricsType) => {
       return `${url}valuation`;
     case MetricsType.FinancialHealth:
       return `${url}financial-health`;
-    case MetricsType.CashFlow:
-      return `${url}cash-flow`;
+    case MetricsType.Profitability:
+      return `${url}profitability`;
     default:
       return "";
   }
