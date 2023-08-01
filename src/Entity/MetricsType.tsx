@@ -2,7 +2,7 @@ enum MetricsType {
   General = "Over View",
   Valuation = "Valuation",
   FinancialHealth = "Financial Health",
-  CashFlow = "Cash Flow",
+  Profitability = "profitability",
 }
 
 export default MetricsType;
