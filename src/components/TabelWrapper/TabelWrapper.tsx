@@ -29,7 +29,7 @@ function TableWrapper({ symbol, metricsType }: TableWrapperProps) {
     <div className="tabel-wrapper">
       <h1 className="tabel-title">
         {metricsType} - {symbol}
-      </h1>
+      </h1> 
       <BoxList financialData={data as FinancialData[]} checkBoxStore={checkBoxStore} textInputStore={textInputStore} />
     </div>
   );

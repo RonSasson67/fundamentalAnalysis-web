@@ -10,6 +10,7 @@ import InputSymbolPage from "./Pages/InputSymbolPage/InputSymbolPage";
 import ChartSliderWrapper from "./components/ChartSlider/ChartSliderWrapper";
 import TabelWrapper from "./components/TabelWrapper/TabelWrapper";
 import FormikWizardWrapper, { FormikWizardWrapperProp } from "./components/WizzardForm/FormikWizardWrapper";
+import MultipleValuation from "./components/MultipleValuation/MultipleValuation";
 
 const darkTheme = createTheme({
   palette: {
@@ -58,6 +59,7 @@ const App = observer(() => {
             <Route path="/" element={<Layot />}>
               <Route path="input" element={<InputSymbolPage />} />
               <Route path="form" element={<FormikWizardWrapper formSteps={formikWizardWrapperProp.formSteps} />} />
+              <Route path="Multiple" element={<MultipleValuation symbol="META" />} />
               <Route path="*" element={<div />} />
             </Route>
           </Routes>
