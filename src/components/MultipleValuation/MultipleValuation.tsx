@@ -1,10 +1,12 @@
-import { FormControlLabel, InputAdornment, Switch, TextField } from "@mui/material";
+import { Box, FormControlLabel, InputAdornment, Switch, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import useMultipleValuation from "../../api/useMultipleValuation";
 import "./MultipleValuation.css";
 import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
 import { MultipleValuationEntity } from "../../Entity/MultipleValuationResponse";
+import RowGrids from "./RowGrids/RowGrids";
+import { set } from "mobx";
 
 type MultipleValuationProps = {
   symbol: string;
@@ -12,27 +14,31 @@ type MultipleValuationProps = {
 
 type MultipleValuationChart = {
   Year: string;
-  EPS: number;
-  StockPrice: number;
+  EPS: string;
+  StockPrice: string;
 };
 
 const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
   const { data, isLoading, error } = useMultipleValuation(symbol);
 
-  const [stockPrice, setStockPrice] = useState(60);
   const [eps, setEps] = useState(0);
   const [growthRateInPrecent, setGrowthRateInPrecent] = useState(0);
   const [pe, setPe] = useState(0);
-  const [isAutocomplite, setIsAutocomplite] = useState(true);
   const [numberofYearsToProject, setNumberofYearsToProject] = useState(5);
   const [yieldReturn, setYieldReturn] = useState(12);
+
+  const [isAutocomplite, setIsAutocomplite] = useState(true);
+
   const [multipleChartValues, setMultipleChartValues] = useState<MultipleValuationChart[]>([]);
+
+  const [stockPrice, setStockPrice] = useState(305);
+  const [expectedPrice, setExpectedPrice] = useState(0);
+  const [sefetyMargin, setSefetyMargin] = useState(0);
 
   const setAutoComplite = (data: MultipleValuationEntity) => {
     setEps(data.eps);
     setGrowthRateInPrecent(data.GrowthRateInPrecent);
     setPe(data.peRecomended);
-    return 0;
   };
 
   useEffect(() => {
@@ -40,37 +46,33 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
       if (isAutocomplite) {
         setAutoComplite(data as MultipleValuationEntity);
       }
-      const multipleChartTemp: MultipleValuationChart[] = [];
-
-      for (let index = 0; index <= numberofYearsToProject; index++) {
-        const newEps = data.eps * Math.pow(1 + data.GrowthRateInPrecent / 100, index);
-        multipleChartTemp.push({
-          Year: (new Date().getFullYear() + index).toString(),
-          EPS: newEps,
-          StockPrice: newEps * data.peRecomended,
-        });
-      }
-
-      setMultipleChartValues(multipleChartTemp);
     }
   }, [data]);
 
   useEffect(() => {
-    const multipleChartTemp: MultipleValuationChart[] = [];
+    if (data) {
+      const multipleChartTemp: MultipleValuationChart[] = [];
 
-    for (let index = 0; index <= numberofYearsToProject; index++) {
-      const newEps = eps * Math.pow(1 + growthRateInPrecent / 100, index);
-      multipleChartTemp.push({
-        Year: (new Date().getFullYear() + index).toString(),
-        EPS: newEps,
-        StockPrice: newEps * pe,
-      });
+      for (let index = 0; index <= numberofYearsToProject; index++) {
+        const newEps = eps * Math.pow(1 + growthRateInPrecent / 100, index);
+        multipleChartTemp.push({
+          Year: (new Date().getFullYear() + index).toString(),
+          EPS: newEps.toFixed(2) * 1,
+          StockPrice: (newEps * pe).toFixed(0) * 1,
+        });
+      }
+
+      const expectedPriceTemp =
+        parseInt(multipleChartTemp.findLast((value) => value.StockPrice)?.StockPrice as string) /
+        Math.pow(1 + yieldReturn / 100, numberofYearsToProject);
+
+      setMultipleChartValues(multipleChartTemp);
+      setExpectedPrice(expectedPriceTemp);
+      setSefetyMargin(((parseInt(expectedPriceTemp.toFixed(0)) - parseInt(stockPrice.toFixed(0))) / stockPrice) * 100);
     }
-
-    setMultipleChartValues(multipleChartTemp);
   }, [pe, eps, growthRateInPrecent, numberofYearsToProject, yieldReturn]);
 
-  if (isLoading) {
+  if (isLoading || !!!expectedPrice) {
     return <div>Loading...</div>;
   }
 
@@ -151,8 +153,10 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
         </div>
       </div>
       <div className="charts">
-        <div>
-          <h2>StockPrice</h2>
+        <div className="chart">
+          <div className="title">
+            <h2>StockPrice</h2>
+          </div>
           <LineChart width={600} height={300} data={multipleChartValues}>
             <Tooltip content={<CustomTooltip />} />
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
@@ -167,9 +171,12 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
               strokeWidth={2}
             />
           </LineChart>
+          <RowGrids values={multipleChartValues.map((values) => `${values.StockPrice}$`)} />
         </div>
-        <div>
-          <h2>EPS</h2>
+        <div className="chart">
+          <div className="title">
+            <h2>EPS</h2>
+          </div>
           <LineChart width={600} height={300} data={multipleChartValues}>
             <Tooltip content={<CustomTooltip />} />
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
@@ -177,7 +184,30 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
             <YAxis yAxisId="EPS" tick={{ fontSize: 15 }} />
             <Line yAxisId="EPS" type="monotone" dataKey={"EPS"} stroke={"#FFB399"} dot={false} strokeWidth={2} />
           </LineChart>
+          <RowGrids values={multipleChartValues.map((values) => values.EPS)} />
         </div>
+      </div>
+      <div className="charts">
+        <TextField type="number" id="outlined-basic" label="Current Price" variant="outlined" value={stockPrice} />
+        <TextField
+          type="text"
+          id="outlined-basic"
+          label="Sefety Margin"
+          variant="outlined"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">%</InputAdornment>,
+          }}
+          value={sefetyMargin.toFixed(2)}
+          color={sefetyMargin <= 0 ? "error" : sefetyMargin >= 20 ? "success" : "warning"}
+          focused
+        />
+        <TextField
+          type="number"
+          id="outlined-basic"
+          label="Expected Price"
+          variant="outlined"
+          value={expectedPrice.toFixed(0)}
+        />
       </div>
     </div>
   );

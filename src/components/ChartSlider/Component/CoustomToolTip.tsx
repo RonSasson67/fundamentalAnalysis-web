@@ -1,20 +1,11 @@
 import { TooltipProps } from "recharts";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import {
-  ValueType,
-  NameType,
-} from "recharts/types/component/DefaultTooltipContent";
+import { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent";
 
-function CustomTooltip({
-  payload,
-  label,
-  active,
-}: TooltipProps<ValueType, NameType>) {
-  console.log(payload);
+function CustomTooltip({ payload, label, active }: TooltipProps<ValueType, NameType>) {
   if (active) {
     // return every item in the payload as a box with the keydata and value and the label in stroke color
-
     return (
       <Box
         sx={{
@@ -28,12 +19,7 @@ function CustomTooltip({
           {label}
         </Typography>
         {payload?.map((item, index) => (
-          <Typography
-            key={index}
-            variant="body2"
-            color={item.color}
-            sx={{ display: "flex", alignItems: "center" }}
-          >
+          <Typography key={index} variant="body2" color={item.color} sx={{ display: "flex", alignItems: "center" }}>
             <Box
               sx={{
                 width: 8,
