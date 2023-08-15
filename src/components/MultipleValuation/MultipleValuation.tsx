@@ -1,12 +1,11 @@
-import { Box, FormControlLabel, InputAdornment, Switch, TextField } from "@mui/material";
+import { FormControlLabel, InputAdornment, Switch, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import useMultipleValuation from "../../api/useMultipleValuation";
-import "./MultipleValuation.css";
 import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
-import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
 import { MultipleValuationEntity } from "../../Entity/MultipleValuationResponse";
+import useMultipleValuation from "../../api/useMultipleValuation";
+import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
+import "./MultipleValuation.css";
 import RowGrids from "./RowGrids/RowGrids";
-import { set } from "mobx";
 
 type MultipleValuationProps = {
   symbol: string;
@@ -31,7 +30,7 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
 
   const [multipleChartValues, setMultipleChartValues] = useState<MultipleValuationChart[]>([]);
 
-  const [stockPrice, setStockPrice] = useState(305);
+  const [stockPrice, setStockPrice] = useState(0);
   const [expectedPrice, setExpectedPrice] = useState(0);
   const [sefetyMargin, setSefetyMargin] = useState(0);
 
@@ -46,6 +45,7 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
       if (isAutocomplite) {
         setAutoComplite(data as MultipleValuationEntity);
       }
+      setStockPrice(data.stockPrice);
     }
   }, [data]);
 
