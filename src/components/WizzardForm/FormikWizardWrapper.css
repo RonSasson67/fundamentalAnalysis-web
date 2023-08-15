@@ -11,6 +11,12 @@
 
 }
 
+.steps{
+    width: 80%;
+    height: 120px;
+    margin: 20px;
+}
+
 .render-component{
     display: flex;
     flex-direction: column;

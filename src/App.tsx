@@ -27,6 +27,10 @@ const Layot = () => {
 const formikWizardWrapperProp: FormikWizardWrapperProp = {
   formSteps: [
     {
+      step: { component: () => <MultipleValuation symbol="AAPL" /> },
+      stepName: "AAPL - Multiple Valuation",
+    },
+    {
       step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.General} /> },
       stepName: "AAPL - General",
     },
@@ -59,7 +63,7 @@ const App = observer(() => {
             <Route path="/" element={<Layot />}>
               <Route path="input" element={<InputSymbolPage />} />
               <Route path="form" element={<FormikWizardWrapper formSteps={formikWizardWrapperProp.formSteps} />} />
-              <Route path="Multiple" element={<MultipleValuation symbol="META" />} />
+              <Route path="Multiple" element={<MultipleValuation symbol="pypl" />} />
               <Route path="*" element={<div />} />
             </Route>
           </Routes>
