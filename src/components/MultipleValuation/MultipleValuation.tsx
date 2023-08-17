@@ -157,7 +157,7 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
           <div className="title">
             <h2>StockPrice</h2>
           </div>
-          <LineChart width={600} height={300} data={multipleChartValues}>
+          <LineChart width={600} height={250} data={multipleChartValues}>
             <Tooltip content={<CustomTooltip />} />
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis dataKey="Year" />
@@ -177,7 +177,7 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
           <div className="title">
             <h2>EPS</h2>
           </div>
-          <LineChart width={600} height={300} data={multipleChartValues}>
+          <LineChart width={600} height={250} data={multipleChartValues}>
             <Tooltip content={<CustomTooltip />} />
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis dataKey="Year" />
@@ -187,7 +187,7 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
           <RowGrids values={multipleChartValues.map((values) => values.EPS)} />
         </div>
       </div>
-      <div className="charts">
+      <div className="charts results">
         <TextField type="number" id="outlined-basic" label="Current Price" variant="outlined" value={stockPrice} />
         <TextField
           type="text"

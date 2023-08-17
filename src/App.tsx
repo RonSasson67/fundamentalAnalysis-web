@@ -21,7 +21,11 @@ const darkTheme = createTheme({
 const queryClient = new QueryClient();
 
 const Layot = () => {
-  return <Outlet />;
+  return (
+    <div className="app">
+      <Outlet />
+    </div>
+  );
 };
 
 const formikWizardWrapperProp: FormikWizardWrapperProp = {
