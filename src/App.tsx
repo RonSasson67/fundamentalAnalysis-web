@@ -64,7 +64,7 @@ const App = observer(() => {
               <Route path="input" element={<InputSymbolPage />} />
               <Route path="form" element={<FormikWizardWrapper formSteps={formikWizardWrapperProp.formSteps} />} />
               <Route path="Multiple" element={<MultipleValuation symbol="pypl" />} />
-              <Route path="*" element={<div />} />
+              <Route path="*" element={<FormikWizardWrapper formSteps={formikWizardWrapperProp.formSteps} />} />
             </Route>
           </Routes>
         </BrowserRouter>
