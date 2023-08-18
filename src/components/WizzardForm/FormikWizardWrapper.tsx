@@ -35,18 +35,23 @@ const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
 
   return (
     <div className="form">
-      <Stepper activeStep={currentStepIndex}>
-        {formSteps.map((step, index) => (
-          <StepMui key={step.stepName} completed={formSteps.length - 1 !== index ? currentStepIndex > index : finished}>
-            <StepLabel>{step.stepName}</StepLabel>
-          </StepMui>
-        ))}
-      </Stepper>
+      <div className="steps">
+        <Stepper activeStep={currentStepIndex}>
+          {formSteps.map((step, index) => (
+            <StepMui
+              key={step.stepName}
+              completed={formSteps.length - 1 !== index ? currentStepIndex > index : finished}
+            >
+              <StepLabel>{step.stepName}</StepLabel>
+            </StepMui>
+          ))}
+        </Stepper>
+      </div>
       <div className="circle" style={{ filter: `blur(${((400 * 50) % 600) + 30}px)` }} />
       <div className="render-component">{renderComponent()}</div>
       <div className="buttons">
         <div className="previous-button-area">
-          <Button color="primary" size="large" disabled={isPrevDisabled} onClick={handlePrev}>
+          <Button color="primary" size="large" disabled={isPrevDisabled || finished} onClick={handlePrev}>
             Previous
           </Button>
         </div>

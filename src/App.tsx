@@ -8,6 +8,7 @@ import MetricsType from "./Entity/MetricsType";
 import RatioType from "./Entity/RatioType";
 import InputSymbolPage from "./Pages/InputSymbolPage/InputSymbolPage";
 import ChartSliderWrapper from "./components/ChartSlider/ChartSliderWrapper";
+import MultipleValuation from "./components/MultipleValuation/MultipleValuation";
 import TabelWrapper from "./components/TabelWrapper/TabelWrapper";
 import FormikWizardWrapper, { FormikWizardWrapperProp } from "./components/WizzardForm/FormikWizardWrapper";
 
@@ -20,11 +21,19 @@ const darkTheme = createTheme({
 const queryClient = new QueryClient();
 
 const Layot = () => {
-  return <Outlet />;
+  return (
+    <div className="app">
+      <Outlet />
+    </div>
+  );
 };
 
 const formikWizardWrapperProp: FormikWizardWrapperProp = {
   formSteps: [
+    {
+      step: { component: () => <MultipleValuation symbol="META" /> },
+      stepName: "META - Multiple Valuation",
+    },
     {
       step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.General} /> },
       stepName: "AAPL - General",
@@ -58,7 +67,8 @@ const App = observer(() => {
             <Route path="/" element={<Layot />}>
               <Route path="input" element={<InputSymbolPage />} />
               <Route path="form" element={<FormikWizardWrapper formSteps={formikWizardWrapperProp.formSteps} />} />
-              <Route path="*" element={<div />} />
+              <Route path="Multiple" element={<MultipleValuation symbol="pypl" />} />
+              <Route path="*" element={<FormikWizardWrapper formSteps={formikWizardWrapperProp.formSteps} />} />
             </Route>
           </Routes>
         </BrowserRouter>
