@@ -1,7 +1,8 @@
 .multiple-valuation {
   display: flex;
   flex-direction: column;
-  row-gap: 40px;
+  row-gap: 80px;
+  height: 90%;
 }
 
 .input-fields {

@@ -57,8 +57,8 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
         const newEps = eps * Math.pow(1 + growthRateInPrecent / 100, index);
         multipleChartTemp.push({
           Year: (new Date().getFullYear() + index).toString(),
-          EPS: newEps.toFixed(2) * 1,
-          StockPrice: (newEps * pe).toFixed(0) * 1,
+          EPS: parseFloat(newEps.toFixed(2)).toString(),
+          StockPrice: parseFloat((newEps * pe).toFixed(0)).toString(),
         });
       }
 
