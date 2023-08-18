@@ -1,4 +1,4 @@
-import { CssBaseline } from "@mui/material";
+import { AppBar, Box, Button, CssBaseline, IconButton, Toolbar, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { observer } from "mobx-react";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -8,9 +8,9 @@ import MetricsType from "./Entity/MetricsType";
 import RatioType from "./Entity/RatioType";
 import InputSymbolPage from "./Pages/InputSymbolPage/InputSymbolPage";
 import ChartSliderWrapper from "./components/ChartSlider/ChartSliderWrapper";
+import MultipleValuation from "./components/MultipleValuation/MultipleValuation";
 import TabelWrapper from "./components/TabelWrapper/TabelWrapper";
 import FormikWizardWrapper, { FormikWizardWrapperProp } from "./components/WizzardForm/FormikWizardWrapper";
-import MultipleValuation from "./components/MultipleValuation/MultipleValuation";
 
 const darkTheme = createTheme({
   palette: {
@@ -31,8 +31,8 @@ const Layot = () => {
 const formikWizardWrapperProp: FormikWizardWrapperProp = {
   formSteps: [
     {
-      step: { component: () => <MultipleValuation symbol="AAPL" /> },
-      stepName: "AAPL - Multiple Valuation",
+      step: { component: () => <MultipleValuation symbol="META" /> },
+      stepName: "META - Multiple Valuation",
     },
     {
       step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.General} /> },
