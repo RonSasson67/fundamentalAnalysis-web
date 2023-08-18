@@ -16,12 +16,12 @@ function GetRatioData(ratioType: RatioType, symbol: string) {
 }
 
 // function that get PE data from server
-function GetPEData(symbol: string) {
+function GetPEData(_: string) {
   return GenerateDataForCharts();
 }
 
 // function that get PToCashFlow data from server
-function GetPToCashFlowData(symbol: string) {
+function GetPToCashFlowData(_: string) {
   return GenerateDataForCharts();
 }
 

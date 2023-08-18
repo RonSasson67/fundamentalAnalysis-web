@@ -35,9 +35,9 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
   const [sefetyMargin, setSefetyMargin] = useState(0);
 
   const setAutoComplite = (data: MultipleValuationEntity) => {
-    setEps(data.eps.toFixed(2));
+    setEps(parseFloat(data.eps.toFixed(2)));
     setGrowthRateInPrecent(data.GrowthRateInPrecent);
-    setPe(data.peRecomended.toFixed(2));
+    setPe(parseFloat(data.peRecomended.toFixed(2)));
   };
 
   useEffect(() => {
