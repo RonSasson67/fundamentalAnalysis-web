@@ -51,7 +51,7 @@ const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
       <div className="render-component">{renderComponent()}</div>
       <div className="buttons">
         <div className="previous-button-area">
-          <Button color="primary" size="large" disabled={isPrevDisabled} onClick={handlePrev}>
+          <Button color="primary" size="large" disabled={isPrevDisabled || finished} onClick={handlePrev}>
             Previous
           </Button>
         </div>

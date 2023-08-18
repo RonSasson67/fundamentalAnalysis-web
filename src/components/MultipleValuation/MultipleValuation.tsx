@@ -188,7 +188,15 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
         </div>
       </div>
       <div className="charts results">
-        <TextField type="number" id="outlined-basic" label="Current Price" variant="outlined" value={stockPrice} />
+        <TextField
+          id="outlined-basic"
+          label="Current Price"
+          variant="outlined"
+          value={stockPrice}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          }}
+        />
         <TextField
           type="text"
           id="outlined-basic"
@@ -202,11 +210,13 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
           focused
         />
         <TextField
-          type="number"
           id="outlined-basic"
           label="Expected Price"
           variant="outlined"
           value={expectedPrice.toFixed(0)}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          }}
         />
       </div>
     </div>
