@@ -3,10 +3,8 @@ import { useQuery, UseQueryResult } from "react-query";
 import axios from "axios";
 import { FinancialData } from "../Entity/FinancialData.interface.ts";
 
-const apiUrl = import.meta.env.VITE_BACKEND_URL;
-
 const mapMetricTypeToUrl = (metricType: MetricsType) => {
-  const url = `${apiUrl}/metrics/`;
+  const url = `${"https://us-central1-personalstockanalysis.cloudfunctions.net/api"}/metrics/`;
   switch (metricType) {
     case MetricsType.General:
       return `${url}overview`;
