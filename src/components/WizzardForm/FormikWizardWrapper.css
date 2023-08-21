@@ -3,29 +3,30 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 100%;
   height: 90%;
 }
 
 .steps {
-  width: 100%;
+  width: 80%;
   flex: 1;
 }
 
 .render-component {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 90%;
+  width: 80%;
   flex: 100%;
+  overflow-x: visible;
 }
 
 .buttons {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  width: 100%;
+  width: 40%;
   flex: 1;
 }
 
@@ -33,8 +34,25 @@
   width: 40vh;
   height: 30vh;
   position: absolute;
-  background-color: rgba(27, 88, 255, 0.935);
+  background-color: rgba(9, 243, 185, 0.935);
   z-index: 1;
   border-radius: 50%;
   transition: 0.3s;
 }
+
+.scroll-bar {
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: auto;
+  }
+  
+  .scroll-bar::-webkit-scrollbar {
+    width: 4px; /* Set the width of the scrollbar */
+  }
+  
+  .scroll-bar::-webkit-scrollbar-track {
+    background-color: #1B1B1B; /* Set the background color of the scrollbar track */
+  }
+  
+  .scroll-bar::-webkit-scrollbar-thumb {
+    background-color: #f1f1f1; /* Set the color of the scrollbar thumb */
+  }

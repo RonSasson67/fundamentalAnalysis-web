@@ -13,8 +13,8 @@ type MultipleValuationProps = {
 
 type MultipleValuationChart = {
   Year: string;
-  EPS: string;
-  StockPrice: string;
+  EPS: number;
+  StockPrice: number;
 };
 
 const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
@@ -57,13 +57,13 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
         const newEps = eps * Math.pow(1 + growthRateInPrecent / 100, index);
         multipleChartTemp.push({
           Year: (new Date().getFullYear() + index).toString(),
-          EPS: parseFloat(newEps.toFixed(2)).toString(),
-          StockPrice: parseFloat((newEps * pe).toFixed(0)).toString(),
+          EPS: parseFloat(newEps.toFixed(2)),
+          StockPrice: parseFloat((newEps * pe).toFixed(0)),
         });
       }
 
       const expectedPriceTemp =
-        parseInt(multipleChartTemp.findLast((value) => value.StockPrice)?.StockPrice as string) /
+        (multipleChartTemp.findLast((value) => value.StockPrice)?.StockPrice as number) /
         Math.pow(1 + yieldReturn / 100, numberofYearsToProject);
 
       setMultipleChartValues(multipleChartTemp);
@@ -157,7 +157,7 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
           <div className="title">
             <h2>StockPrice</h2>
           </div>
-          <LineChart width={600} height={250} data={multipleChartValues}>
+          <LineChart width={525} height={250} data={multipleChartValues}>
             <Tooltip content={<CustomTooltip />} />
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis dataKey="Year" />
@@ -177,12 +177,12 @@ const MultipleValuation = ({ symbol }: MultipleValuationProps) => {
           <div className="title">
             <h2>EPS</h2>
           </div>
-          <LineChart width={600} height={250} data={multipleChartValues}>
+          <LineChart width={525} height={250} data={multipleChartValues}>
             <Tooltip content={<CustomTooltip />} />
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis dataKey="Year" />
             <YAxis yAxisId="EPS" tick={{ fontSize: 15 }} />
-            <Line yAxisId="EPS" type="monotone" dataKey={"EPS"} stroke={"#FFB399"} dot={false} strokeWidth={2} />
+            <Line yAxisId="EPS" type="monotone" dataKey={"EPS"} stroke={"#99FF99"} dot={false} strokeWidth={2} />
           </LineChart>
           <RowGrids values={multipleChartValues.map((values) => values.EPS)} />
         </div>
