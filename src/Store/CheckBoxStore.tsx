@@ -2,13 +2,15 @@ import { makeAutoObservable } from "mobx";
 
 class CheckBoxStore {
   checkedItems: Map<string, boolean> = new Map();
+  defaultValue: boolean = true;
 
-  constructor() {
+  constructor(defaultValue: boolean) {
     makeAutoObservable(this);
+    this.defaultValue = defaultValue;
   }
 
   toggle(key: string) {
-    const currentValue = this.checkedItems.get(key) || false;
+    const currentValue = this.checkedItems.get(key);
     this.checkedItems.set(key, !currentValue);
   }
 
@@ -17,7 +19,8 @@ class CheckBoxStore {
       return this.checkedItems.get(key);
     }
 
-    this.checkedItems.set(key, false);
+    this.checkedItems.set(key, this.defaultValue);
+    return this.defaultValue;
   }
 }
 

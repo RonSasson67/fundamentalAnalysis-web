@@ -15,6 +15,19 @@ import FormikWizardWrapper, { FormikWizardWrapperProp } from "./components/Wizza
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
+    primary: {
+      main: "#18a59c",
+    },
+    secondary: {
+      main: "#07312e",
+    },
+    text: {
+      primary: "rgba(255,252,252,0.87)",
+    },
+    background: {
+      default: "#062826",
+      paper: "##24e0d3",
+    },
   },
 });
 
@@ -30,10 +43,6 @@ const Layot = () => {
 
 const formikWizardWrapperProp: FormikWizardWrapperProp = {
   formSteps: [
-    {
-      step: { component: () => <MultipleValuation symbol="META" /> },
-      stepName: "META - Multiple Valuation",
-    },
     {
       step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.General} /> },
       stepName: "AAPL - General",
@@ -53,6 +62,10 @@ const formikWizardWrapperProp: FormikWizardWrapperProp = {
     {
       step: { component: () => <ChartSliderWrapper symbol="META" ratioType={RatioType.PE} /> },
       stepName: "META - PE",
+    },
+    {
+      step: { component: () => <MultipleValuation symbol="META" /> },
+      stepName: "META - Multiple Valuation",
     },
   ],
 };

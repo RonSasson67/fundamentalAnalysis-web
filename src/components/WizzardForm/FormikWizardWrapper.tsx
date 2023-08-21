@@ -47,8 +47,8 @@ const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
           ))}
         </Stepper>
       </div>
-      <div className="circle" style={{ filter: `blur(${((400 * 50) % 600) + 30}px)` }} />
-      <div className="render-component">{renderComponent()}</div>
+      <div className="circle" style={{ filter: `blur(${((20 * 50) % 600) + 30}px)` }} />
+      <div className="render-component scroll-bar">{renderComponent()}</div>
       <div className="buttons">
         <div className="previous-button-area">
           <Button color="primary" size="large" disabled={isPrevDisabled || finished} onClick={handlePrev}>
