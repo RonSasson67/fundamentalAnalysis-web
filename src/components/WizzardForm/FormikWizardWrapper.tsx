@@ -34,7 +34,6 @@ const FormikWizardWrapper = ({ formSteps, symbol }: FormikWizardWrapperProp) => 
     useFormikWizard({
       initialValues: {},
       onSubmit: (_: any) => {
-        console.log(JSON.stringify(methods.getValues()));
         setFinished(true);
         navigate("/summary", { state: methods.getValues() });
       },
