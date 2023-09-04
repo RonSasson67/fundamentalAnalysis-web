@@ -1,0 +1,33 @@
+.scroll-bar {
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: auto;
+}
+
+.scroll-bar::-webkit-scrollbar {
+  width: 2px; /* Set the width of the scrollbar */
+  height: 4px;
+}
+
+.scroll-bar::-webkit-scrollbar-track {
+  background-color: #1b1b1b; /* Set the background color of the scrollbar track */
+}
+
+.scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #f1f1f1; /* Set the color of the scrollbar thumb */
+}
+
+.title {
+  font-family: Poppins;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

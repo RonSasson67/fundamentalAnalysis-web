@@ -4,9 +4,13 @@ import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import { Step, useFormikWizard } from "formik-wizard-form";
 import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import "./FormikWizardWrapper.css";
+import "../../Utils/Utils.css";
+import { useNavigate } from "react-router-dom";
 
 export type FormikWizardWrapperProp = {
+  symbol: string;
   formSteps: FormStep[];
 };
 
@@ -15,18 +19,23 @@ type FormStep = {
   stepName: string;
 };
 
-const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
+const FormikWizardWrapper = ({ formSteps, symbol }: FormikWizardWrapperProp) => {
+  const navigate = useNavigate();
   const [finished, setFinished] = useState(false);
+  const methods = useForm({
+    defaultValues: {
+      symbol: symbol,
+    },
+  });
 
-  //create steps from formSteps prop and add type of the varibale
   const steps: Step[] = formSteps.map((formStep) => formStep.step);
 
   const { renderComponent, handlePrev, handleNext, isNextDisabled, isPrevDisabled, isLastStep, currentStepIndex } =
     useFormikWizard({
-      initialValues: { firstName: "", lastName: "" },
-      onSubmit: (values: any) => {
-        console.log(values);
+      initialValues: {},
+      onSubmit: (_: any) => {
         setFinished(true);
+        navigate("/summary", { state: methods.getValues() });
       },
       validateOnNext: true,
       activeStepIndex: 0,
@@ -38,17 +47,16 @@ const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
       <div className="steps">
         <Stepper activeStep={currentStepIndex}>
           {formSteps.map((step, index) => (
-            <StepMui
-              key={step.stepName}
-              completed={formSteps.length - 1 !== index ? currentStepIndex > index : finished}
-            >
+            <StepMui key={step.stepName} completed={formSteps.length - 1 !== index ? currentStepIndex > index : finished}>
               <StepLabel>{step.stepName}</StepLabel>
             </StepMui>
           ))}
         </Stepper>
       </div>
-      <div className="circle" style={{ filter: `blur(${((20 * 50) % 600) + 30}px)` }} />
-      <div className="render-component scroll-bar">{renderComponent()}</div>
+      <div className="circle" style={{ filter: `blur(200px)` }} />
+      <FormProvider {...methods}>
+        <div className="render-component scroll-bar">{renderComponent()}</div>
+      </FormProvider>
       <div className="buttons">
         <div className="previous-button-area">
           <Button color="primary" size="large" disabled={isPrevDisabled || finished} onClick={handlePrev}>
