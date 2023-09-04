@@ -21,6 +21,8 @@ import {
 import TabelHeadCoustom from "../Common/TableHeadCoustom/TabelHeadCoustom";
 import "./FormSummary.css";
 import SecurityIcon from "@mui/icons-material/Security";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
 interface Metric {
   checkbox: boolean;
@@ -55,6 +57,18 @@ interface SummaryFinanceDataProps {
 }
 
 const FormSummary = ({ data }: SummaryFinanceDataProps) => {
+  let { state } = useLocation();
+
+  useState(() => {
+    if (state) {
+      data = state;
+    }
+  });
+
+  if (!data || !!!state) {
+    return <div>Something went wrong: {(data as any).message}</div>;
+  }
+
   return (
     <div className="finance-container">
       <div className="title">

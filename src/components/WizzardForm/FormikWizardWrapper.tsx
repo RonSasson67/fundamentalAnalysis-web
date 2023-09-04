@@ -7,6 +7,7 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import "./FormikWizardWrapper.css";
 import "../../Utils/Utils.css";
+import { useNavigate } from "react-router-dom";
 
 export type FormikWizardWrapperProp = {
   symbol: string;
@@ -19,6 +20,7 @@ type FormStep = {
 };
 
 const FormikWizardWrapper = ({ formSteps, symbol }: FormikWizardWrapperProp) => {
+  const navigate = useNavigate();
   const [finished, setFinished] = useState(false);
   const methods = useForm({
     defaultValues: {
@@ -34,6 +36,7 @@ const FormikWizardWrapper = ({ formSteps, symbol }: FormikWizardWrapperProp) => 
       onSubmit: (_: any) => {
         console.log(JSON.stringify(methods.getValues()));
         setFinished(true);
+        navigate("/summary", { state: methods.getValues() });
       },
       validateOnNext: true,
       activeStepIndex: 0,
