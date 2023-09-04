@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode dev",
+    "prod": "vite --mode prod",
     "build": "tsc && vite build --mode prod",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --mode prod"
@@ -13,7 +14,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.0",
-    "@mui/icons-material": "^5.11.16",
+    "@mui/icons-material": "^5.14.6",
     "@mui/lab": "^5.0.0-alpha.131",
     "@mui/material": "^5.13.5",
     "@mui/styles": "^5.13.2",
@@ -27,6 +28,7 @@
     "mobx-react": "^7.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.4",
     "react-query": "^3.39.3",
     "recharts": "^2.6.2",
     "use-debounce": "^9.0.4",
