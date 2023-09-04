@@ -11,6 +11,7 @@ import ChartSliderWrapper from "./components/ChartSlider/ChartSliderWrapper";
 import MultipleValuation from "./components/MultipleValuation/MultipleValuation";
 import TabelWrapper from "./components/TabelWrapper/TabelWrapper";
 import FormikWizardWrapper, { FormikWizardWrapperProp } from "./components/WizzardForm/FormikWizardWrapper";
+import FormSummary from "./components/FomrSummary/FormSummary";
 
 const darkTheme = createTheme({
   palette: {
@@ -42,32 +43,161 @@ const Layot = () => {
 };
 
 const formikWizardWrapperProp: FormikWizardWrapperProp = {
+  symbol: "Meta",
   formSteps: [
     {
-      step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.General} /> },
-      stepName: "AAPL - General",
+      step: { component: () => <TabelWrapper metricsType={MetricsType.General} /> },
+      stepName: "General",
     },
     {
-      step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.Valuation} /> },
-      stepName: "AAPL - Valuation",
+      step: { component: () => <TabelWrapper metricsType={MetricsType.Valuation} /> },
+      stepName: "Valuation",
     },
     {
-      step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.FinancialHealth} /> },
-      stepName: "AAPL - FinancialHealth",
+      step: { component: () => <TabelWrapper metricsType={MetricsType.FinancialHealth} /> },
+      stepName: "FinancialHealth",
     },
     {
-      step: { component: () => <TabelWrapper symbol="AAPL" metricsType={MetricsType.Profitability} /> },
-      stepName: "AAPL - Profitability",
+      step: { component: () => <TabelWrapper metricsType={MetricsType.Profitability} /> },
+      stepName: "Profitability",
     },
     {
       step: { component: () => <ChartSliderWrapper symbol="META" ratioType={RatioType.PE} /> },
-      stepName: "META - PE",
+      stepName: "PE",
     },
     {
-      step: { component: () => <MultipleValuation symbol="META" /> },
-      stepName: "META - Multiple Valuation",
+      step: { component: () => <MultipleValuation /> },
+      stepName: "Multiple Valuation",
     },
   ],
+};
+
+const financeData = {
+  symbol: "Meta",
+  metrics: {
+    "Over View": {
+      "Market Cap": {
+        checkbox: false,
+        note: "aa",
+        value: "734.76B",
+      },
+      Industry: {
+        checkbox: false,
+        note: "bb\n\nc",
+        value: "Media",
+      },
+      "EPS (TTM)": {
+        checkbox: false,
+        note: "v",
+        value: "8.63",
+      },
+      "Div & Yield": {
+        checkbox: true,
+        note: "c",
+        value: "0.00 (0.00)",
+      },
+      "Shares Outstanding": {
+        checkbox: true,
+        note: "",
+        value: "2.57B",
+      },
+      "Ex-Dividend": {
+        checkbox: true,
+        note: "",
+        value: "--",
+      },
+      "Next Earnings": {
+        checkbox: false,
+        note: "a",
+        value: "10-24",
+      },
+      "Payout Ratio": {
+        checkbox: true,
+        note: "",
+        value: "0.00",
+      },
+      "Earnings Yield": {
+        checkbox: true,
+        note: "",
+        value: "3.07",
+      },
+    },
+    Valuation: {
+      "P/E (TTM)": {
+        checkbox: true,
+        note: "",
+        value: "34.23",
+      },
+      "Forward P/E": {
+        checkbox: false,
+        note: "good",
+        value: "14.95",
+      },
+      "P/FCF (TTM)": {
+        checkbox: false,
+        note: "",
+        value: "30.57",
+      },
+      "P/S (TTM)": {
+        checkbox: true,
+        note: "",
+        value: "2.614",
+      },
+      "Forward PEG": {
+        checkbox: true,
+        note: "",
+        value: "2.635",
+      },
+    },
+    "Financial Health": {
+      "Current Ratio": {
+        checkbox: true,
+        note: "aaa",
+        value: "2.20",
+      },
+      "financial leverage": {
+        checkbox: false,
+        note: "",
+        value: "0.48",
+      },
+    },
+    profitability: {
+      "Return On Equity": {
+        checkbox: true,
+        note: "",
+        value: "17.40%",
+      },
+      "Profit Margin(TTM)": {
+        checkbox: false,
+        note: "aaaa",
+        value: "78.30%",
+      },
+      "Operating margin(TTM)": {
+        checkbox: true,
+        note: "",
+        value: "24.88%",
+      },
+      "Net Income Margin": {
+        checkbox: false,
+        note: "",
+        value: "19.94%",
+      },
+    },
+  },
+  multiple_valuation: {
+    value: {
+      eps: 8.59,
+      groth_rate: 19.55,
+      pe: 27.78,
+      number_of_years_to_project: 5,
+      wanted_yield_rreturn: 12,
+      current_price: 285.5,
+    },
+    result: {
+      sefety_margin: "-1.76",
+      expected_price: "330.66",
+    },
+  },
 };
 
 const App = observer(() => {
@@ -79,9 +209,10 @@ const App = observer(() => {
           <Routes>
             <Route path="/" element={<Layot />}>
               <Route path="input" element={<InputSymbolPage />} />
-              <Route path="form" element={<FormikWizardWrapper formSteps={formikWizardWrapperProp.formSteps} />} />
-              <Route path="Multiple" element={<MultipleValuation symbol="pypl" />} />
-              <Route path="*" element={<FormikWizardWrapper formSteps={formikWizardWrapperProp.formSteps} />} />
+              <Route path="summary" element={<FormSummary data={financeData} />} />
+              <Route path="Multiple" element={<MultipleValuation />} />
+              <Route path="form" element={<FormikWizardWrapper {...formikWizardWrapperProp} />} />
+              <Route path="*" element={<FormikWizardWrapper {...formikWizardWrapperProp} />} />
             </Route>
           </Routes>
         </BrowserRouter>
