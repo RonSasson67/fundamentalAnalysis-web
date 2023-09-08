@@ -7,7 +7,7 @@ import { useDebounce } from "use-debounce";
 import { ResultSymbol, getSymbolSearch } from "../../api/getSymbolSearch";
 import "./InputSymbolPage.css";
 
-const urlToNavigate = "/over-view/";
+const urlToNavigate = "/form";
 
 export default function Asynchronous() {
   const [inputValue, setInputValue] = useState("");
@@ -55,7 +55,7 @@ export default function Asynchronous() {
         renderInput={InoutText}
         onChange={(_: any, value: ResultSymbol | null) => {
           if (value) {
-            navigate(`${urlToNavigate}${value.symbol}`);
+            navigate(`${urlToNavigate}/${value.symbol}`);
           }
         }}
       />

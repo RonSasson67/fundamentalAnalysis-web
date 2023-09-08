@@ -8,10 +8,10 @@ import MetricsType from "./Entity/MetricsType";
 import RatioType from "./Entity/RatioType";
 import InputSymbolPage from "./Pages/InputSymbolPage/InputSymbolPage";
 import ChartSliderWrapper from "./components/ChartSlider/ChartSliderWrapper";
+import FormSummary from "./components/FomrSummary/FormSummary";
 import MultipleValuation from "./components/MultipleValuation/MultipleValuation";
 import TabelWrapper from "./components/TabelWrapper/TabelWrapper";
-import FormikWizardWrapper, { FormikWizardWrapperProp } from "./components/WizzardForm/FormikWizardWrapper";
-import FormSummary from "./components/FomrSummary/FormSummary";
+import FormikWizardWrapper, { FormStep } from "./components/WizzardForm/FormikWizardWrapper";
 
 const darkTheme = createTheme({
   palette: {
@@ -42,35 +42,32 @@ const Layot = () => {
   );
 };
 
-const formikWizardWrapperProp: FormikWizardWrapperProp = {
-  symbol: "Meta",
-  formSteps: [
-    {
-      step: { component: () => <TabelWrapper metricsType={MetricsType.General} /> },
-      stepName: "General",
-    },
-    {
-      step: { component: () => <TabelWrapper metricsType={MetricsType.Valuation} /> },
-      stepName: "Valuation",
-    },
-    {
-      step: { component: () => <TabelWrapper metricsType={MetricsType.FinancialHealth} /> },
-      stepName: "FinancialHealth",
-    },
-    {
-      step: { component: () => <TabelWrapper metricsType={MetricsType.Profitability} /> },
-      stepName: "Profitability",
-    },
-    {
-      step: { component: () => <ChartSliderWrapper symbol="META" ratioType={RatioType.PE} /> },
-      stepName: "PE",
-    },
-    {
-      step: { component: () => <MultipleValuation /> },
-      stepName: "Multiple Valuation",
-    },
-  ],
-};
+const formStep: FormStep[] = [
+  {
+    step: { component: () => <TabelWrapper metricsType={MetricsType.General} /> },
+    stepName: "General",
+  },
+  {
+    step: { component: () => <TabelWrapper metricsType={MetricsType.Valuation} /> },
+    stepName: "Valuation",
+  },
+  {
+    step: { component: () => <TabelWrapper metricsType={MetricsType.FinancialHealth} /> },
+    stepName: "FinancialHealth",
+  },
+  {
+    step: { component: () => <TabelWrapper metricsType={MetricsType.Profitability} /> },
+    stepName: "Profitability",
+  },
+  {
+    step: { component: () => <ChartSliderWrapper symbol="Mock" ratioType={RatioType.PE} /> },
+    stepName: "PE",
+  },
+  {
+    step: { component: () => <MultipleValuation /> },
+    stepName: "Multiple Valuation",
+  },
+];
 
 const financeData = {
   symbol: "Meta",
@@ -211,8 +208,10 @@ const App = observer(() => {
               <Route path="input" element={<InputSymbolPage />} />
               <Route path="summary" element={<FormSummary data={financeData} />} />
               <Route path="Multiple" element={<MultipleValuation />} />
-              <Route path="form" element={<FormikWizardWrapper {...formikWizardWrapperProp} />} />
-              <Route path="*" element={<FormikWizardWrapper {...formikWizardWrapperProp} />} />
+              <Route path="form">
+                <Route path=":symbol" element={<FormikWizardWrapper formSteps={formStep} />} />
+              </Route>
+              <Route path="*" element={<InputSymbolPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

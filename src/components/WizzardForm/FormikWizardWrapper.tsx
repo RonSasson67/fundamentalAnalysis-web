@@ -5,21 +5,21 @@ import Stepper from "@mui/material/Stepper";
 import { Step, useFormikWizard } from "formik-wizard-form";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import "./FormikWizardWrapper.css";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../Utils/Utils.css";
-import { useNavigate } from "react-router-dom";
+import "./FormikWizardWrapper.css";
 
 export type FormikWizardWrapperProp = {
-  symbol: string;
   formSteps: FormStep[];
 };
 
-type FormStep = {
+export type FormStep = {
   step: Step;
   stepName: string;
 };
 
-const FormikWizardWrapper = ({ formSteps, symbol }: FormikWizardWrapperProp) => {
+const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
+  let { symbol } = useParams();
   const navigate = useNavigate();
   const [finished, setFinished] = useState(false);
   const methods = useForm({
