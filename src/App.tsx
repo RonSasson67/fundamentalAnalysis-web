@@ -199,12 +199,15 @@ const financeData = {
 
 const App = observer(() => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layot />}>
+    <div className="app">
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
+          <BrowserRouter>
+            <Routes>
+              {
+                //<Route path="/" element={<Layot />} />
+              }
               <Route path="input" element={<InputSymbolPage />} />
               <Route path="summary" element={<FormSummary data={financeData} />} />
               <Route path="Multiple" element={<MultipleValuation />} />
@@ -212,11 +215,11 @@ const App = observer(() => {
                 <Route path=":symbol" element={<FormikWizardWrapper formSteps={formStep} />} />
               </Route>
               <Route path="*" element={<InputSymbolPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
-    </QueryClientProvider>
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </div>
   );
 });
 
