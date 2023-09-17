@@ -2,7 +2,7 @@ import { CssBaseline } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { observer } from "mobx-react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Navigate, Outlet, Route, Routes, redirect } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
 import MetricsType from "./Entity/MetricsType";
 import RatioType from "./Entity/RatioType";
