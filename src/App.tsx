@@ -2,7 +2,7 @@ import { CssBaseline } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { observer } from "mobx-react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
 import MetricsType from "./Entity/MetricsType";
 import RatioType from "./Entity/RatioType";
@@ -204,14 +204,15 @@ const App = observer(() => {
         <CssBaseline />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Layot />}>
+            <Route element={<Layot />}>
               <Route path="input" element={<InputSymbolPage />} />
               <Route path="summary" element={<FormSummary data={financeData} />} />
               <Route path="Multiple" element={<MultipleValuation />} />
               <Route path="form">
                 <Route path=":symbol" element={<FormikWizardWrapper formSteps={formStep} />} />
               </Route>
-              <Route path="*" element={<InputSymbolPage />} />
+              <Route path="/" element={<Navigate to={"input"} replace={true} />}></Route>
+              <Route path="*" element={<div>404 :(</div>} />
             </Route>
           </Routes>
         </BrowserRouter>

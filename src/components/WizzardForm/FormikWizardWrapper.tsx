@@ -53,7 +53,6 @@ const FormikWizardWrapper = ({ formSteps }: FormikWizardWrapperProp) => {
           ))}
         </Stepper>
       </div>
-      <div className="circle" style={{ filter: `blur(200px)` }} />
       <FormProvider {...methods}>
         <div className="render-component scroll-bar">{renderComponent()}</div>
       </FormProvider>
