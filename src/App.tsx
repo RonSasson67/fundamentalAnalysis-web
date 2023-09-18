@@ -12,6 +12,7 @@ import FormSummary from "./components/FomrSummary/FormSummary";
 import MultipleValuation from "./components/MultipleValuation/MultipleValuation";
 import TabelWrapper from "./components/TabelWrapper/TabelWrapper";
 import FormikWizardWrapper, { FormStep } from "./components/WizzardForm/FormikWizardWrapper";
+import DCFCalculator from "./components/DcfCalculator/DcfCalculator";
 
 const darkTheme = createTheme({
   palette: {
@@ -208,6 +209,62 @@ const App = observer(() => {
               <Route path="input" element={<InputSymbolPage />} />
               <Route path="summary" element={<FormSummary data={financeData} />} />
               <Route path="Multiple" element={<MultipleValuation />} />
+              <Route
+                path="dcf"
+                element={
+                  <DCFCalculator
+                    data={{
+                      symbol: "aapl",
+                      stockPrice: 175.01,
+                      MarketCap: 2778862.8,
+                      recomandedMetrics: {
+                        priceToErnings: 24.22913,
+                        priceTofcf: 22.026384999999998,
+                        discountRate: 8,
+                        growthRate: 6.36,
+                        terminalGrowthRate: 2,
+                      },
+                      historicalFinancials: [
+                        {
+                          year: 2022,
+                          netIncome: 99803000000 / 1000000,
+                          revenue: 394328000000 / 1000000,
+                          cashFromOperations: 122151000000 / 1000000,
+                          freeCashFlow: 111443000000 / 1000000,
+                        },
+                        {
+                          year: 2021,
+                          netIncome: 94680000000 / 1000000,
+                          revenue: 365817000000 / 1000000,
+                          cashFromOperations: 104038000000 / 1000000,
+                          freeCashFlow: 92953000000 / 1000000,
+                        },
+                        {
+                          year: 2020,
+                          netIncome: 57411000000 / 1000000,
+                          revenue: 274515000000 / 1000000,
+                          cashFromOperations: 80674000000 / 1000000,
+                          freeCashFlow: 73365000000 / 1000000,
+                        },
+                        {
+                          year: 2019,
+                          netIncome: 55256000000 / 1000000,
+                          revenue: 260174000000 / 1000000,
+                          cashFromOperations: 69391000000 / 1000000,
+                          freeCashFlow: 58896000000 / 1000000,
+                        },
+                        {
+                          year: 2018,
+                          netIncome: 59531000000 / 1000000,
+                          revenue: 265595000000 / 1000000,
+                          cashFromOperations: 77434000000 / 1000000,
+                          freeCashFlow: 64121000000 / 1000000,
+                        },
+                      ],
+                    }}
+                  />
+                }
+              />
               <Route path="form">
                 <Route path=":symbol" element={<FormikWizardWrapper formSteps={formStep} />} />
               </Route>
