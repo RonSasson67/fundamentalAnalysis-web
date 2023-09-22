@@ -130,6 +130,7 @@ const MultipleValuation = observer(() => {
           />
           <Controller
             name={PE_PREFIX}
+            defaultValue={0}
             control={control}
             render={({ field }) => (
               <TextField
@@ -144,6 +145,7 @@ const MultipleValuation = observer(() => {
           />
           <Controller
             name={NUMBER_OF_YEARS_TO_PROJECT_PREFIX}
+            defaultValue={DEFULT_NUMBER_OF_YEATS}
             control={control}
             render={({ field }) => (
               <TextField type="number" id="outlined-basic" label="Number of Years To Project" variant="outlined" {...field} />
