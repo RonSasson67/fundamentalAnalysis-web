@@ -1,9 +1,8 @@
 import { Grow, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React from "react";
-import "./DcfCalculator.css";
-import { ChartContainer, LinePlot, MarkPlot } from "@mui/x-charts";
-import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
+import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
+import "./DcfCalculator.css";
 
 interface StockCalculatorProps {
   data: {
@@ -41,7 +40,7 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
       .reduce((acc, value) => acc + value, 0) / data.historicalFinancials.length;
 
   //calculate feature next 5 years net income
-  const firstHistoricalYear = data.historicalFinancials[0].year;
+  const firstHistoricalYear = data.historicalFinancials[data.historicalFinancials.length - 1].year;
   const estimatedFinancialsDependOnNetIncome: EstimatedFinancials[] = Array.from({ length: 5 }, (_, i) => {
     const year = firstHistoricalYear + i + 1;
     const lastYearNetIncome = data.historicalFinancials[0].netIncome;
@@ -75,201 +74,153 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
     <div className="dcf_page">
       <Grow in={true} timeout={500}>
         <Paper elevation={3} style={{ padding: "16px" }}>
-          <Typography variant="h4">{data.symbol} Stock Valuation Calculator</Typography>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Parameter</TableCell>
-                  <TableCell>Value</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Stock Price</TableCell>
-                  <TableCell>${data.stockPrice.toLocaleString()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Market Cap</TableCell>
-                  <TableCell>${data.MarketCap.toLocaleString()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Price to Earnings Ratio</TableCell>
-                  <TableCell>{data.recomandedMetrics.priceToErnings.toLocaleString()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Price to Free Cash Flow Ratio</TableCell>
-                  <TableCell>{data.recomandedMetrics.priceTofcf.toLocaleString()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Discount Rate</TableCell>
-                  <TableCell>{data.recomandedMetrics.discountRate}%</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Growth Rate</TableCell>
-                  <TableCell>{data.recomandedMetrics.growthRate}%</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Terminal Growth Rate</TableCell>
-                  <TableCell>{data.recomandedMetrics.terminalGrowthRate}%</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Typography variant="h6">{data.symbol} Stock Valuation Calculator</Typography>
+          <CustomTable
+            headers={["Parameter", "Value"]}
+            data={[
+              ["Stock Price", `$${data.stockPrice.toLocaleString()}`],
+              ["Market Cap", `$${data.MarketCap.toLocaleString()}`],
+              ["Price to Earnings Ratio", data.recomandedMetrics.priceToErnings.toLocaleString()],
+              ["Price to Free Cash Flow Ratio", data.recomandedMetrics.priceTofcf.toLocaleString()],
+              ["Discount Rate", `${data.recomandedMetrics.discountRate.toLocaleString()}%`],
+              ["Growth Rate", `${data.recomandedMetrics.growthRate.toLocaleString()}%`],
+              ["Terminal Growth Rate", `${data.recomandedMetrics.terminalGrowthRate.toLocaleString()}%`],
+            ]}
+          />
         </Paper>
       </Grow>
       <Grow in={true} timeout={1500}>
         <Paper elevation={3} style={{ padding: "16px" }}>
           <Typography variant="h6">Historical Financials</Typography>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  {data.historicalFinancials
-                    .slice(0)
-                    .reverse()
-                    .map((financials) => (
-                      <TableCell key={financials.year}>{financials.year}</TableCell>
-                    ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {historicalNetIncome.length > 0 && (
-                  <TableRow>
-                    <TableCell>Net Income</TableCell>
-                    <TableCell>
-                      {
-                        <LineChart
-                          width={75}
-                          height={75}
-                          data={data.historicalFinancials.slice(0).reverse()}
-                          margin={{ top: 15 }}
-                        >
-                          <XAxis dataKey="year" hide={true} />
-                          <YAxis hide={true} />
-                          <Tooltip content={<CustomTooltip />} />
-                          <Line type="monotone" dataKey="netIncome" stroke="#8884d8" dot={false} strokeWidth={2} />
-                        </LineChart>
-                      }
-                    </TableCell>
-                    {historicalNetIncome
-                      .slice(0)
-                      .reverse()
-                      .map((netIncome) => (
-                        <TableCell key={netIncome}>${netIncome.toLocaleString()}</TableCell>
-                      ))}
-                  </TableRow>
-                )}
-                {historicalRevenue.length > 0 && (
-                  <TableRow>
-                    <TableCell>Revenue</TableCell>
-                    {historicalRevenue
-                      .slice(0)
-                      .reverse()
-                      .map((revenue) => (
-                        <TableCell key={revenue}>${revenue.toLocaleString()}</TableCell>
-                      ))}
-                  </TableRow>
-                )}
-                {historicalFreeCashFlow.length > 0 && (
-                  <TableRow>
-                    <TableCell>Free Cash Flow</TableCell>
-                    {historicalFreeCashFlow
-                      .slice(0)
-                      .reverse()
-                      .map((freeCashFlow) => (
-                        <TableCell key={freeCashFlow}>${freeCashFlow.toLocaleString()}</TableCell>
-                      ))}
-                  </TableRow>
-                )}
-                {historicalOperatingCashFlow.length > 0 && (
-                  <TableRow>
-                    <TableCell>Cash From Operations</TableCell>
-                    {historicalOperatingCashFlow
-                      .slice(0)
-                      .reverse()
-                      .map((cashFromOperations) => (
-                        <TableCell key={cashFromOperations}>${cashFromOperations.toLocaleString()}</TableCell>
-                      ))}
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <CustomTable
+            headers={["", "", ...data.historicalFinancials.map((financials) => financials.year.toString())]}
+            data={[
+              [
+                "Net Income",
+                <LineChartWrapper data={data.historicalFinancials} dataKey={"netIncome"} />,
+                ...historicalNetIncome.map((value) => `$${value.toLocaleString()}`),
+              ],
+              [
+                "Revenue",
+                <LineChartWrapper data={data.historicalFinancials} dataKey={"revenue"} />,
+                ...historicalRevenue.map((value) => `$${value.toLocaleString()}`),
+              ],
+              [
+                "Free Cash Flow",
+                <LineChartWrapper data={data.historicalFinancials} dataKey={"freeCashFlow"} />,
+                ...historicalFreeCashFlow.map((value) => `$${value.toLocaleString()}`),
+              ],
+              [
+                "Cash From Operations",
+                <LineChartWrapper data={data.historicalFinancials} dataKey={"cashFromOperations"} />,
+                ...historicalOperatingCashFlow.map((value) => `$${value.toLocaleString()}`),
+              ],
+            ]}
+          />
         </Paper>
       </Grow>
       <Grow in={true} timeout={2500}>
         <Paper elevation={3} style={{ padding: "16px" }}>
-          <Typography variant="h6">Financials Depend On Net Income</Typography>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  {estimatedFinancialsDependOnNetIncome.map((financials) => (
-                    <TableCell key={financials.year}>{financials.year}</TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Net Income</TableCell>
-                  {estimatedFinancialsDependOnNetIncome.map((financials) => (
-                    <TableCell key={financials.year}>${financials.netIncome.toLocaleString()}</TableCell>
-                  ))}
-                </TableRow>
-                <TableRow>
-                  <TableCell>Free Cash Flow</TableCell>
-                  {estimatedFinancialsDependOnNetIncome.map((financials) => (
-                    <TableCell key={financials.year}>${financials.freeCashFlow.toLocaleString()}</TableCell>
-                  ))}
-                </TableRow>
-                <TableRow>
-                  <TableCell>Free Cash Flow Capitalize</TableCell>
-                  {estimatedFinancialsDependOnNetIncome.map((financials) => (
-                    <TableCell key={financials.year}>${financials.freeCashFlowCapitalize.toLocaleString()}</TableCell>
-                  ))}
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Typography variant="h6">Estimated Financials</Typography>
+          <CustomTable
+            headers={["", ...estimatedFinancialsDependOnNetIncome.map((financials) => financials.year.toString())]}
+            data={[
+              [
+                "Net Income",
+                <LineChartWrapper
+                  data={estimatedFinancialsDependOnNetIncome.map((estimatedFinancials) => {
+                    return { year: estimatedFinancials.year, netIncome: estimatedFinancials.netIncome };
+                  })}
+                  dataKey={"netIncome"}
+                />,
+                ...estimatedFinancialsDependOnNetIncome.map(
+                  (value) => `$${value.netIncome.toLocaleString().toLocaleString()}`
+                ),
+              ],
+              [
+                "Free Cash Flow",
+                <LineChartWrapper
+                  data={estimatedFinancialsDependOnNetIncome.map((estimatedFinancials) => {
+                    return { year: estimatedFinancials.year, freeCashFlow: estimatedFinancials.freeCashFlow };
+                  })}
+                  dataKey={"freeCashFlow"}
+                />,
+                ...estimatedFinancialsDependOnNetIncome.map((value) => `$${value.freeCashFlow.toLocaleString()}`),
+              ],
+              [
+                "Free Cash Flow Capitalize",
+                <LineChartWrapper
+                  data={estimatedFinancialsDependOnNetIncome.map((estimatedFinancials) => {
+                    return {
+                      year: estimatedFinancials.year,
+                      freeCashFlowCapitalize: estimatedFinancials.freeCashFlowCapitalize,
+                    };
+                  })}
+                  dataKey={"freeCashFlowCapitalize"}
+                />,
+                ...estimatedFinancialsDependOnNetIncome.map((value) => `$${value.freeCashFlowCapitalize.toLocaleString()}`),
+              ],
+            ]}
+          />
         </Paper>
       </Grow>
-      <Grow in={true} timeout={3500}>
+
+      <Grow in={true} timeout={4500}>
         <Paper elevation={3} style={{ padding: "16px" }}>
-          <Typography variant="h6">Summary DCF</Typography>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell>Value</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Estimated Marcet Cap Depend On Net Income</TableCell>
-                  <TableCell>${estemateMarcetCapDependOnNetIncome.toLocaleString()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Intrinsic Value Depend On Net Income</TableCell>
-                  <TableCell>${intrinsicValueDependOnNetIncome.toLocaleString()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Estimated Stock Price Depend On Free Cash Flow</TableCell>
-                  <TableCell>
-                    ${(estemateMarcetCapDependOnNetIncome / (data.MarketCap / data.stockPrice)).toLocaleString()}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Typography variant="h6">Intrinsic Value</Typography>
+          <CustomTable
+            headers={["", "Value"]}
+            data={[
+              ["Discounted Cash Flow", `$${estemateMarcetCapDependOnNetIncome.toLocaleString()}`],
+              ["Intrinsic Value", `$${intrinsicValueDependOnNetIncome.toLocaleString()}`],
+              [
+                "Stock Price Estimated",
+                `$${(estemateMarcetCapDependOnNetIncome / (data.MarketCap / data.stockPrice)).toLocaleString()}`,
+              ],
+            ]}
+          />
         </Paper>
       </Grow>
     </div>
   );
 };
+
+const LineChartWrapper = ({ data, dataKey }: { data: any[]; dataKey: string }) => (
+  <LineChart width={75} height={75} data={data} margin={{ top: 15 }}>
+    <XAxis dataKey="year" hide={true} />
+    <YAxis hide={true} />
+    <Tooltip content={<CustomTooltip />} />
+    <Line type="monotone" dataKey={dataKey} stroke="#99FF99" dot={false} strokeWidth={2} />
+  </LineChart>
+);
+
+// Create a reusable Table component
+type CustomTableProps = {
+  headers: string[];
+  data: any[][];
+};
+
+const CustomTable = ({ headers, data }: CustomTableProps) => (
+  <TableContainer>
+    <Table>
+      <TableHead>
+        <TableRow>
+          {headers.map((header) => (
+            <TableCell key={header}>{header}</TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {data.map((row, rowIndex) => (
+          <TableRow key={rowIndex}>
+            {row.map((cell, cellIndex) => (
+              <TableCell key={cellIndex}>{cell}</TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
 
 export default DCFCalculator;
