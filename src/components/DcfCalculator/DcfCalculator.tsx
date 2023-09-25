@@ -1,4 +1,16 @@
-import { Grow, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import {
+  Grow,
+  InputAdornment,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
@@ -69,6 +81,84 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
   const estemateMarcetCapDependOnNetIncome =
     estimatedFinancialsDependOnNetIncome.reduce((acc, value) => acc + value.freeCashFlowCapitalize, 0) +
     intrinsicValueDependOnNetIncome;
+
+  //reactor
+  return (
+    <div className="dcf">
+      <Paper className="inputs" elevation={3} style={{ padding: "16px" }}>
+        <TextField
+          type="number"
+          id="outlined-basic"
+          label="Stock Price"
+          variant="outlined"
+          value={data.stockPrice}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          }}
+        />
+        <TextField
+          type="number"
+          id="outlined-basic"
+          label="Market Cap"
+          variant="outlined"
+          value={data.MarketCap}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          }}
+        />
+        <TextField
+          type="number"
+          id="outlined-basic"
+          label="Price to Earnings Ratio"
+          variant="outlined"
+          value={data.recomandedMetrics.priceToErnings}
+        />
+        <TextField
+          type="number"
+          id="outlined-basic"
+          label="Price to Free Cash Flow Ratio"
+          variant="outlined"
+          value={data.recomandedMetrics.priceTofcf}
+        />
+        <TextField
+          type="number"
+          id="outlined-basic"
+          label="Discount Rate"
+          variant="outlined"
+          value={data.recomandedMetrics.discountRate}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">%</InputAdornment>,
+          }}
+        />
+        <TextField
+          type="number"
+          id="outlined-basic"
+          label="Growth Rate"
+          variant="outlined"
+          value={data.recomandedMetrics.growthRate}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">%</InputAdornment>,
+          }}
+        />
+        <TextField
+          type="number"
+          id="outlined-basic"
+          label="Terminal Growth Rate"
+          variant="outlined"
+          value={data.recomandedMetrics.terminalGrowthRate}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">%</InputAdornment>,
+          }}
+        />
+      </Paper>
+      <Paper className="present_dcf" elevation={3} style={{ padding: "16px" }}>
+        <p>1</p>
+        <div className="choosing_charts"></div>
+        <div className="chart"></div>
+        <div className="dcf_results"></div>
+      </Paper>
+    </div>
+  );
 
   return (
     <div className="dcf_page">
@@ -164,7 +254,6 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
           />
         </Paper>
       </Grow>
-
       <Grow in={true} timeout={4500}>
         <Paper elevation={3} style={{ padding: "16px" }}>
           <Typography variant="h6">Intrinsic Value</Typography>
