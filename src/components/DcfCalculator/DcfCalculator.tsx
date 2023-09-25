@@ -148,7 +148,7 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
                 ...estimatedFinancialsDependOnNetIncome.map((value) => `$${value.freeCashFlow.toLocaleString()}`),
               ],
               [
-                "Free Cash Flow Capitalize",
+                "Free Cash Flow Present Value",
                 <LineChartWrapper
                   data={estimatedFinancialsDependOnNetIncome.map((estimatedFinancials) => {
                     return {
