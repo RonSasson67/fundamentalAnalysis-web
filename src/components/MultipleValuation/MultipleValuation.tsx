@@ -19,7 +19,6 @@ import {
 } from "../../constants";
 import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
 import "./MultipleValuation.css";
-import RowGrids from "./RowGrids/RowGrids";
 
 type MultipleValuationChart = {
   Year: string;
