@@ -9,7 +9,7 @@ function CustomTooltip({ payload, label, active }: TooltipProps<ValueType, NameT
     return (
       <Box
         sx={{
-          backgroundColor: "background.paper",
+          backgroundColor: "background.default",
           p: 1,
           borderRadius: 1,
           border: "1px solid #ddd",
@@ -29,7 +29,7 @@ function CustomTooltip({ payload, label, active }: TooltipProps<ValueType, NameT
                 mr: 1,
               }}
             />
-            {item.name}: {item.value}
+            {item.name}: {item.value?.toLocaleString()}
           </Typography>
         ))}
       </Box>
