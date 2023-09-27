@@ -1,4 +1,9 @@
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import TimelineIcon from "@mui/icons-material/Timeline";
 import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Divider,
   Grow,
   InputAdornment,
   Paper,
@@ -15,6 +20,8 @@ import React from "react";
 import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
 import "./DcfCalculator.css";
+import FinencialMetricsChart, { FinencialMetricsChartProps, FinencialMetricschartData } from "./FinencialChart/FinencialChart";
+import FinencialResults from "./FinancialReuslts/FinencialResults";
 
 interface StockCalculatorProps {
   data: {
@@ -45,17 +52,27 @@ interface EstimatedFinancials {
   freeCashFlowCapitalize: number;
 }
 
+enum Charts {
+  StockChart = "StockChart",
+  FinencialMetricsChart = "FinencialMetricsChart",
+}
+
 const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
+  const [selectedChart, setSelectedChart] = React.useState<Charts>(Charts.StockChart);
+
+  console.log(Charts.FinencialMetricsChart);
+
   const avrageNetIncomeToFcf =
     data.historicalFinancials
       .map((financials) => financials.netIncome / financials.freeCashFlow)
       .reduce((acc, value) => acc + value, 0) / data.historicalFinancials.length;
 
+  const lastYearIndex = data.historicalFinancials.length - 1;
   //calculate feature next 5 years net income
-  const firstHistoricalYear = data.historicalFinancials[data.historicalFinancials.length - 1].year;
+  const firstHistoricalYear = data.historicalFinancials[lastYearIndex].year;
   const estimatedFinancialsDependOnNetIncome: EstimatedFinancials[] = Array.from({ length: 5 }, (_, i) => {
     const year = firstHistoricalYear + i + 1;
-    const lastYearNetIncome = data.historicalFinancials[0].netIncome;
+    const lastYearNetIncome = data.historicalFinancials[lastYearIndex].netIncome;
     const netIncome = lastYearNetIncome * Math.pow(1 + data.recomandedMetrics.growthRate / 100, i + 1);
     const freeCashFlow = netIncome / avrageNetIncomeToFcf;
     const freeCashFlowCapitalize = freeCashFlow / Math.pow(1 + data.recomandedMetrics.discountRate / 100, i + 1);
@@ -78,9 +95,28 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
     (data.recomandedMetrics.discountRate / 100 - data.recomandedMetrics.terminalGrowthRate / 100) /
     Math.pow(1 + data.recomandedMetrics.discountRate / 100, 6);
 
-  const estemateMarcetCapDependOnNetIncome =
+  const estemateMarketCapDependOnNetIncome =
     estimatedFinancialsDependOnNetIncome.reduce((acc, value) => acc + value.freeCashFlowCapitalize, 0) +
     intrinsicValueDependOnNetIncome;
+
+  const finencialMetricsChartProps: FinencialMetricschartData[] = data.historicalFinancials
+    .map((financials) => {
+      return {
+        year: financials.year,
+        netIncome: financials.netIncome,
+        freeCashFlow: financials.freeCashFlow,
+      };
+    })
+    .concat(
+      estimatedFinancialsDependOnNetIncome.map((estimatedFinancials) => {
+        return {
+          year: estimatedFinancials.year,
+          netIncome: estimatedFinancials.netIncome,
+          freeCashFlow: estimatedFinancials.freeCashFlow,
+          freeCashFlowPresentValue: estimatedFinancials.freeCashFlowCapitalize,
+        };
+      })
+    );
 
   //reactor
   return (
@@ -152,10 +188,38 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
         />
       </Paper>
       <Paper className="present_dcf" elevation={3} style={{ padding: "16px" }}>
-        <p>1</p>
-        <div className="choosing_charts"></div>
-        <div className="chart"></div>
-        <div className="dcf_results"></div>
+        <div className="choosing_charts">
+          <BottomNavigation
+            showLabels
+            value={selectedChart}
+            onChange={(_, newValue) => {
+              setSelectedChart(newValue);
+            }}
+          >
+            <BottomNavigationAction label="Stock Price" icon={<TimelineIcon />} value={Charts.StockChart} />
+            <BottomNavigationAction label="Financial Reports" icon={<ReceiptIcon />} value={Charts.FinencialMetricsChart} />
+          </BottomNavigation>
+        </div>
+        <Divider />
+        <div className="chart">
+          {
+            {
+              [Charts.StockChart]: <LineChartWrapper data={data.historicalFinancials} dataKey={"stockPrice"} />,
+              [Charts.FinencialMetricsChart]: <FinencialMetricsChart chartData={finencialMetricsChartProps} />,
+            }[selectedChart]
+          }
+        </div>
+        <Divider />
+        <div className="dcf_results_section">
+          {
+            {
+              [Charts.StockChart]: <>aaa</>,
+              [Charts.FinencialMetricsChart]: (
+                <FinencialResults markectCap={data.MarketCap} estimateMarkectCap={estemateMarketCapDependOnNetIncome} />
+              ),
+            }[selectedChart]
+          }
+        </div>
       </Paper>
     </div>
   );
@@ -260,11 +324,11 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
           <CustomTable
             headers={["", "Value"]}
             data={[
-              ["Discounted Cash Flow", `$${estemateMarcetCapDependOnNetIncome.toLocaleString()}`],
+              ["Discounted Cash Flow", `$${estemateMarketCapDependOnNetIncome.toLocaleString()}`],
               ["Intrinsic Value", `$${intrinsicValueDependOnNetIncome.toLocaleString()}`],
               [
                 "Stock Price Estimated",
-                `$${(estemateMarcetCapDependOnNetIncome / (data.MarketCap / data.stockPrice)).toLocaleString()}`,
+                `$${(estemateMarketCapDependOnNetIncome / (data.MarketCap / data.stockPrice)).toLocaleString()}`,
               ],
             ]}
           />

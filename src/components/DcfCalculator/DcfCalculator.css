@@ -13,11 +13,32 @@
   width: 20%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: space-around;
 }
 
 .present_dcf {
   height: 80%;
   width: 70%;
   display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.choosing_charts {
+  height: 10%;
+}
+
+.chart {
+  height: 90%;
+}
+
+.dcf_results_section {
+  height: 10%;
+}
+
+.dcf_results {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
