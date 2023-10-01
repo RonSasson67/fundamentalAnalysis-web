@@ -20,8 +20,9 @@ import React from "react";
 import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
 import "./DcfCalculator.css";
-import FinencialMetricsChart, { FinencialMetricsChartProps, FinencialMetricschartData } from "./FinencialChart/FinencialChart";
 import FinencialResults from "./FinancialReuslts/FinencialResults";
+import FinencialMetricsChart, { FinencialMetricschartData } from "./FinencialChart/FinencialChart";
+import StockChart from "./StockChart/StockChart";
 
 interface StockCalculatorProps {
   data: {
@@ -59,9 +60,6 @@ enum Charts {
 
 const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
   const [selectedChart, setSelectedChart] = React.useState<Charts>(Charts.StockChart);
-
-  console.log(Charts.FinencialMetricsChart);
-
   const avrageNetIncomeToFcf =
     data.historicalFinancials
       .map((financials) => financials.netIncome / financials.freeCashFlow)
@@ -204,7 +202,7 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
         <div className="chart">
           {
             {
-              [Charts.StockChart]: <LineChartWrapper data={data.historicalFinancials} dataKey={"stockPrice"} />,
+              [Charts.StockChart]: <StockChart />,
               [Charts.FinencialMetricsChart]: <FinencialMetricsChart chartData={finencialMetricsChartProps} />,
             }[selectedChart]
           }
