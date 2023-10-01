@@ -46,6 +46,11 @@ const TextFieldWrapper = ({
       }}
       color={color}
       focused
+      sx={{
+        "& .MuiInputBase-input": {
+          textAlign: "center",
+        },
+      }}
     />
   );
 };
