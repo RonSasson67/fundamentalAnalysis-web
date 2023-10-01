@@ -15,13 +15,10 @@ function CustomTick({ x, y, payload }: CustomTickProps) {
         textAnchor="end"
         fill="white"
         transform="rotate(-35)"
+        overflow={"visible"}
         style={{
-          fontSize: "0.875rem",
-          lineHeight: "1.43",
           fontFamily: "Inter, Open Sans",
-          fontWeight: 400,
-          opacity: 0.7,
-          overflow: "visible",
+          height: "auto",
         }}
       >
         {payload.value}
