@@ -1,4 +1,4 @@
-export type DcfValuationResponse = {
+export type DcfValuationEntity = {
   symbol: string;
   stockPrice: number;
   MarketCap: number;
@@ -25,6 +25,6 @@ export type RecomandedMetrics = {
 };
 
 export type stockPrice = {
-  date: string;
+  date: number;
   close: number;
 };

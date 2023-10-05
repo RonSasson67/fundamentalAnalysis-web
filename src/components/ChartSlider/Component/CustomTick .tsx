@@ -21,7 +21,7 @@ function CustomTick({ x, y, payload }: CustomTickProps) {
           height: "auto",
         }}
       >
-        {payload.value}
+        {new Date(payload.value * 1000).toISOString().slice(0, 10)}
       </text>
     </g>
   );

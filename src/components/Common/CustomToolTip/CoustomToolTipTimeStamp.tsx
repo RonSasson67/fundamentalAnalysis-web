@@ -2,8 +2,9 @@ import { TooltipProps } from "recharts";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent";
+import lodash from "lodash";
 
-function CustomTooltip({ payload, label, active }: TooltipProps<ValueType, NameType>) {
+function CoustomToolTipTimeStamp({ payload, label, active }: TooltipProps<ValueType, NameType>) {
   if (active) {
     // return every item in the payload as a box with the keydata and value and the label in stroke color
     return (
@@ -16,7 +17,7 @@ function CustomTooltip({ payload, label, active }: TooltipProps<ValueType, NameT
         }}
       >
         <Typography variant="body2" color="text.secondary">
-          {label}
+          {new Date(label * 1000).toISOString().slice(0, 10)}
         </Typography>
         {payload?.map((item, index) => (
           <Typography key={index} variant="body2" color={item.color} sx={{ display: "flex", alignItems: "center" }}>
@@ -29,7 +30,7 @@ function CustomTooltip({ payload, label, active }: TooltipProps<ValueType, NameT
                 mr: 1,
               }}
             />
-            {item.name}: {item.value?.toLocaleString()}
+            {lodash.startCase(item.name as string)}: {item.value?.toLocaleString()}
           </Typography>
         ))}
       </Box>
@@ -37,4 +38,4 @@ function CustomTooltip({ payload, label, active }: TooltipProps<ValueType, NameT
   }
   return null;
 }
-export default CustomTooltip;
+export default CoustomToolTipTimeStamp;

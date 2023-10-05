@@ -7,6 +7,7 @@ import {
   Grow,
   InputAdornment,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -16,35 +17,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
-import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
+import { DcfValuationEntity, stockPrice } from "../../Entity/DcfValuationEntity";
+import useDcfValuation from "../../api/useDcfValuation";
+import CustomTooltip from "../Common/CustomToolTip/CoustomToolTip";
 import "./DcfCalculator.css";
 import FinencialResults from "./FinancialReuslts/FinencialResults";
 import FinencialMetricsChart, { FinencialMetricschartData } from "./FinencialChart/FinencialChart";
 import StockChart from "./StockChart/StockChart";
-
-interface StockCalculatorProps {
-  data: {
-    symbol: string;
-    stockPrice: number;
-    MarketCap: number;
-    recomandedMetrics: {
-      priceToErnings: number;
-      priceTofcf: number;
-      discountRate: number;
-      growthRate: number;
-      terminalGrowthRate: number;
-    };
-    historicalFinancials: {
-      year: number;
-      netIncome: number;
-      revenue: number;
-      cashFromOperations: number;
-      freeCashFlow: number;
-    }[];
-  };
-}
 
 interface EstimatedFinancials {
   year: number;
@@ -58,64 +39,134 @@ enum Charts {
   FinencialMetricsChart = "FinencialMetricsChart",
 }
 
-const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
+const DCFCalculator: React.FC<DcfValuationEntity> = () => {
+  const { data, isLoading, isError } = useDcfValuation("META");
   const [selectedChart, setSelectedChart] = React.useState<Charts>(Charts.StockChart);
-  const avrageNetIncomeToFcf =
-    data.historicalFinancials
-      .map((financials) => financials.netIncome / financials.freeCashFlow)
-      .reduce((acc, value) => acc + value, 0) / data.historicalFinancials.length;
+  const [finencialMetricsChartProps, setFinencialMetricsChartProps] = React.useState<FinencialMetricschartData[]>([]);
+  const [estemateMarketCapDependOnNetIncome, setEstemateMarketCapDependOnNetIncome] = React.useState<number>(0);
+  const [intrinsicValueDependOnNetIncome, setIntrinsicValueDependOnNetIncome] = React.useState<number>(0);
+  const [estimatedFinancialsDependOnNetIncome, setEstimatedFinancialsDependOnNetIncome] = React.useState<
+    EstimatedFinancials[]
+  >([]);
+  const [historicalNetIncome, setHistoricalNetIncome] = React.useState<number[]>([]);
+  const [historicalRevenue, setHistoricalRevenue] = React.useState<number[]>([]);
+  const [historicalFreeCashFlow, setHistoricalFreeCashFlow] = React.useState<number[]>([]);
+  const [historicalOperatingCashFlow, setHistoricalOperatingCashFlow] = React.useState<number[]>([]);
+  const [estimatedStockPrice, setEstimatedStockPrice] = React.useState<stockPrice[]>([]);
 
-  const lastYearIndex = data.historicalFinancials.length - 1;
-  //calculate feature next 5 years net income
-  const firstHistoricalYear = data.historicalFinancials[lastYearIndex].year;
-  const estimatedFinancialsDependOnNetIncome: EstimatedFinancials[] = Array.from({ length: 5 }, (_, i) => {
-    const year = firstHistoricalYear + i + 1;
-    const lastYearNetIncome = data.historicalFinancials[lastYearIndex].netIncome;
-    const netIncome = lastYearNetIncome * Math.pow(1 + data.recomandedMetrics.growthRate / 100, i + 1);
-    const freeCashFlow = netIncome / avrageNetIncomeToFcf;
-    const freeCashFlowCapitalize = freeCashFlow / Math.pow(1 + data.recomandedMetrics.discountRate / 100, i + 1);
-    return {
-      year: year,
-      netIncome: netIncome,
-      freeCashFlow: freeCashFlow,
-      freeCashFlowCapitalize: freeCashFlowCapitalize,
-    };
-  });
+  useEffect(() => {
+    if (data === undefined) return;
 
-  const historicalNetIncome = data.historicalFinancials.map((financials) => financials.netIncome);
-  const historicalRevenue = data.historicalFinancials.map((financials) => financials.revenue);
-  const historicalFreeCashFlow = data.historicalFinancials.map((financials) => financials.freeCashFlow);
-  const historicalOperatingCashFlow = data.historicalFinancials.map((financials) => financials.cashFromOperations);
+    const avrageNetIncomeToFcf =
+      data.historicalFinancials
+        .map((financials) => financials.netIncome / financials.freeCashFlow)
+        .reduce((acc, value) => acc + value, 0) / data.historicalFinancials.length;
 
-  const intrinsicValueDependOnNetIncome =
-    (estimatedFinancialsDependOnNetIncome[estimatedFinancialsDependOnNetIncome.length - 1].freeCashFlowCapitalize *
-      (1 + data.recomandedMetrics.terminalGrowthRate / 100)) /
-    (data.recomandedMetrics.discountRate / 100 - data.recomandedMetrics.terminalGrowthRate / 100) /
-    Math.pow(1 + data.recomandedMetrics.discountRate / 100, 6);
-
-  const estemateMarketCapDependOnNetIncome =
-    estimatedFinancialsDependOnNetIncome.reduce((acc, value) => acc + value.freeCashFlowCapitalize, 0) +
-    intrinsicValueDependOnNetIncome;
-
-  const finencialMetricsChartProps: FinencialMetricschartData[] = data.historicalFinancials
-    .map((financials) => {
+    const lastYearIndex = data.historicalFinancials.length - 1;
+    //calculate feature next 5 years net income
+    const firstHistoricalYear = data.historicalFinancials[lastYearIndex].year;
+    const estimatedFinancialsDependOnNetIncome: EstimatedFinancials[] = Array.from({ length: 5 }, (_, i) => {
+      const year = firstHistoricalYear + i + 1;
+      const lastYearNetIncome = data.historicalFinancials[lastYearIndex].netIncome;
+      const netIncome = lastYearNetIncome * Math.pow(1 + data.recomandedMetrics.growthRate / 100, i + 1);
+      const freeCashFlow = netIncome / avrageNetIncomeToFcf;
+      const freeCashFlowCapitalize = freeCashFlow / Math.pow(1 + data.recomandedMetrics.discountRate / 100, i + 1);
       return {
-        year: financials.year,
-        netIncome: financials.netIncome,
-        freeCashFlow: financials.freeCashFlow,
+        year: year,
+        netIncome: netIncome,
+        freeCashFlow: freeCashFlow,
+        freeCashFlowCapitalize: freeCashFlowCapitalize,
       };
-    })
-    .concat(
-      estimatedFinancialsDependOnNetIncome.map((estimatedFinancials) => {
+    });
+
+    const historicalNetIncome = data.historicalFinancials.map((financials) => financials.netIncome);
+    const historicalRevenue = data.historicalFinancials.map((financials) => financials.revenue);
+    const historicalFreeCashFlow = data.historicalFinancials.map((financials) => financials.freeCashFlow);
+    const historicalOperatingCashFlow = data.historicalFinancials.map((financials) => financials.cashFromOperations);
+
+    const intrinsicValueDependOnNetIncome =
+      (estimatedFinancialsDependOnNetIncome[estimatedFinancialsDependOnNetIncome.length - 1].freeCashFlowCapitalize *
+        (1 + data.recomandedMetrics.terminalGrowthRate / 100)) /
+      (data.recomandedMetrics.discountRate / 100 - data.recomandedMetrics.terminalGrowthRate / 100) /
+      Math.pow(1 + data.recomandedMetrics.discountRate / 100, 6);
+
+    const estemateMarketCapDependOnNetIncome =
+      estimatedFinancialsDependOnNetIncome.reduce((acc, value) => acc + value.freeCashFlowCapitalize, 0) +
+      intrinsicValueDependOnNetIncome;
+
+    const FinencialMetricsChartProps = data.historicalFinancials
+      .map((financials) => {
         return {
-          year: estimatedFinancials.year,
-          netIncome: estimatedFinancials.netIncome,
-          freeCashFlow: estimatedFinancials.freeCashFlow,
-          freeCashFlowPresentValue: estimatedFinancials.freeCashFlowCapitalize,
+          year: financials.year,
+          netIncome: financials.netIncome,
+          freeCashFlow: financials.freeCashFlow,
         };
       })
+      .concat(
+        estimatedFinancialsDependOnNetIncome.map((estimatedFinancials) => {
+          return {
+            year: estimatedFinancials.year,
+            netIncome: estimatedFinancials.netIncome,
+            freeCashFlow: estimatedFinancials.freeCashFlow,
+            freeCashFlowPresentValue: estimatedFinancials.freeCashFlowCapitalize,
+          };
+        })
+      );
+
+    const currentDate = new Date();
+    const estimatedStockPrice = [
+      {
+        date: new Date().getTime() / 1000,
+        close: data.stockPrice,
+      },
+      {
+        date: new Date(currentDate.getTime() + 5 * 365 * 24 * 60 * 60 * 1000).getTime() / 1000,
+        close: estemateMarketCapDependOnNetIncome / (data.MarketCap / data.stockPrice),
+      },
+    ];
+
+    setHistoricalNetIncome(historicalNetIncome);
+    setHistoricalRevenue(historicalRevenue);
+    setHistoricalFreeCashFlow(historicalFreeCashFlow);
+    setHistoricalOperatingCashFlow(historicalOperatingCashFlow);
+    setEstimatedFinancialsDependOnNetIncome(estimatedFinancialsDependOnNetIncome);
+    setIntrinsicValueDependOnNetIncome(intrinsicValueDependOnNetIncome);
+    setEstemateMarketCapDependOnNetIncome(estemateMarketCapDependOnNetIncome);
+    setFinencialMetricsChartProps(FinencialMetricsChartProps);
+    setEstimatedStockPrice(estimatedStockPrice);
+  }, [data]);
+
+  //insert skeleton loader
+  if (isLoading)
+    return (
+      <div className="dcf">
+        <Paper className="inputs" elevation={3} style={{ padding: "16px" }}>
+          <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+          <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+          <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+          <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+          <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+          <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+          <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+        </Paper>
+        <Paper className="present_dcf" elevation={3} style={{ padding: "16px" }}>
+          <div className="choosing_charts">
+            <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+          </div>
+          <Divider />
+          <div className="chart">
+            <Skeleton variant="rounded" width={"100%"} height={"50%"} />
+          </div>
+          <Divider />
+          <div className="dcf_results_section">
+            <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+            <Skeleton variant="rounded" width={"100%"} height={"7%"} />
+          </div>
+        </Paper>
+      </div>
     );
 
+  if (isError || data === undefined) return <>Error</>;
   //reactor
   return (
     <div className="dcf">
@@ -202,7 +253,13 @@ const DCFCalculator: React.FC<StockCalculatorProps> = ({ data }) => {
         <div className="chart">
           {
             {
-              [Charts.StockChart]: <StockChart />,
+              [Charts.StockChart]: (
+                <StockChart
+                  stockPricesAllHistory={data.stockPricesAllHistory}
+                  stockPricesToday={data.stockPricesToday}
+                  estimatedStockPrice={estimatedStockPrice}
+                />
+              ),
               [Charts.FinencialMetricsChart]: <FinencialMetricsChart chartData={finencialMetricsChartProps} />,
             }[selectedChart]
           }
