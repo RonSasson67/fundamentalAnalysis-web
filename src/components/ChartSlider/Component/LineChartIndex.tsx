@@ -1,8 +1,8 @@
 import { observer } from "mobx-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import ChartIndexStore from "../../../Store/ChartIndexStore";
-import CustomTooltip from "../../Common/CustomToolTip/CoustomToolTip";
-import CustomTick from "./CustomTick ";
+import { CustomTick } from "../../Common/CustomTick/CustomTick";
+import CustomTooltip from "../../Common/CustomToolTip/CustomToolTip";
 
 type ChartLineProps = {
   chartIndexStore: ChartIndexStore;

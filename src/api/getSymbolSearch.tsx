@@ -13,11 +13,9 @@ export type ResultSymbol = {
 const getSymbolSearch = (symbol: string): UseQueryResult<ResultSymbol[]> => {
   const url = `https://api.stockunlock.com/symbol/getSymbolSearch?includeEtfInSearch=true&includeMutualFundInSearch=false&query=${symbol}`;
 
-  const result = useQuery<ResultSymbol[]>(["symbol", symbol], () => {
+  return useQuery<ResultSymbol[]>(["symbol", symbol], () => {
     return axios.get(url).then((res) => res.data.results);
   });
-
-  return result;
 };
 
 export { getSymbolSearch };

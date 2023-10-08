@@ -1,6 +1,6 @@
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import CustomTooltip from "../../Common/CustomToolTip/CoustomToolTip";
-import CustomTick from "../../ChartSlider/Component/CustomTick ";
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { CustomTick } from "../../../Common/CustomTick/CustomTick";
+import CustomTooltip from "../../../Common/CustomToolTip/CustomToolTip";
 
 export interface FinencialMetricschartData {
   year: number;

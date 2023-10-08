@@ -10,7 +10,7 @@ import MetricsType from "../../Entity/MetricsType.tsx";
 import { useGetMetricData } from "../../api/MetricsApi.tsx";
 import { METRICS_CHECKBOX, METRICS_NOTE, METRICS_PREFIX, NUMBER_OF_COLUMS, VALUE } from "../../constants.ts";
 import "./TabelWrapper.css";
-import TabelHeadCoustom from "../Common/TableHeadCoustom/TabelHeadCoustom.tsx";
+import TabelHeadCoustom from "../Common/CustomTableHead/CustomTabelHead.tsx";
 import "../../Utils/Utils.css";
 
 interface TableWrapperProps {

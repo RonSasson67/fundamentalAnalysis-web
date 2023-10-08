@@ -18,7 +18,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import TabelHeadCoustom from "../Common/TableHeadCoustom/TabelHeadCoustom";
+import TabelHeadCoustom from "../Common/CustomTableHead/CustomTabelHead";
 import "./FormSummary.css";
 import SecurityIcon from "@mui/icons-material/Security";
 import { useLocation } from "react-router-dom";
@@ -52,12 +52,9 @@ interface SummaryFinanceData {
   };
 }
 
-interface SummaryFinanceDataProps {
-  data: SummaryFinanceData;
-}
-
-const FormSummary = ({ data }: SummaryFinanceDataProps) => {
+const FormSummary = () => {
   let { state } = useLocation();
+  let data: SummaryFinanceData | undefined;
 
   useState(() => {
     if (state) {

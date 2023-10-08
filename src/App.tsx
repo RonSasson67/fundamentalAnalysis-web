@@ -45,6 +45,10 @@ const Layot = () => {
 
 const formStep: FormStep[] = [
   {
+    step: { component: () => <DCFCalculator /> },
+    stepName: "DCF",
+  },
+  {
     step: { component: () => <TabelWrapper metricsType={MetricsType.General} /> },
     stepName: "General",
   },
@@ -70,134 +74,6 @@ const formStep: FormStep[] = [
   },
 ];
 
-const financeData = {
-  symbol: "Meta",
-  metrics: {
-    "Over View": {
-      "Market Cap": {
-        checkbox: false,
-        note: "aa",
-        value: "734.76B",
-      },
-      Industry: {
-        checkbox: false,
-        note: "bb\n\nc",
-        value: "Media",
-      },
-      "EPS (TTM)": {
-        checkbox: false,
-        note: "v",
-        value: "8.63",
-      },
-      "Div & Yield": {
-        checkbox: true,
-        note: "c",
-        value: "0.00 (0.00)",
-      },
-      "Shares Outstanding": {
-        checkbox: true,
-        note: "",
-        value: "2.57B",
-      },
-      "Ex-Dividend": {
-        checkbox: true,
-        note: "",
-        value: "--",
-      },
-      "Next Earnings": {
-        checkbox: false,
-        note: "a",
-        value: "10-24",
-      },
-      "Payout Ratio": {
-        checkbox: true,
-        note: "",
-        value: "0.00",
-      },
-      "Earnings Yield": {
-        checkbox: true,
-        note: "",
-        value: "3.07",
-      },
-    },
-    Valuation: {
-      "P/E (TTM)": {
-        checkbox: true,
-        note: "",
-        value: "34.23",
-      },
-      "Forward P/E": {
-        checkbox: false,
-        note: "good",
-        value: "14.95",
-      },
-      "P/FCF (TTM)": {
-        checkbox: false,
-        note: "",
-        value: "30.57",
-      },
-      "P/S (TTM)": {
-        checkbox: true,
-        note: "",
-        value: "2.614",
-      },
-      "Forward PEG": {
-        checkbox: true,
-        note: "",
-        value: "2.635",
-      },
-    },
-    "Financial Health": {
-      "Current Ratio": {
-        checkbox: true,
-        note: "aaa",
-        value: "2.20",
-      },
-      "financial leverage": {
-        checkbox: false,
-        note: "",
-        value: "0.48",
-      },
-    },
-    profitability: {
-      "Return On Equity": {
-        checkbox: true,
-        note: "",
-        value: "17.40%",
-      },
-      "Profit Margin(TTM)": {
-        checkbox: false,
-        note: "aaaa",
-        value: "78.30%",
-      },
-      "Operating margin(TTM)": {
-        checkbox: true,
-        note: "",
-        value: "24.88%",
-      },
-      "Net Income Margin": {
-        checkbox: false,
-        note: "",
-        value: "19.94%",
-      },
-    },
-  },
-  multiple_valuation: {
-    value: {
-      eps: 8.59,
-      groth_rate: 19.55,
-      pe: 27.78,
-      number_of_years_to_project: 5,
-      wanted_yield_rreturn: 12,
-      current_price: 285.5,
-    },
-    result: {
-      sefety_margin: "-1.76",
-      expected_price: "330.66",
-    },
-  },
-};
-
 const App = observer(() => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -207,64 +83,9 @@ const App = observer(() => {
           <Routes>
             <Route element={<Layot />}>
               <Route path="input" element={<InputSymbolPage />} />
-              <Route path="summary" element={<FormSummary data={financeData} />} />
+              <Route path="summary" element={<FormSummary />} />
               <Route path="Multiple" element={<MultipleValuation />} />
-              <Route
-                path="dcf"
-                element={
-                  <DCFCalculator
-                    data={{
-                      symbol: "aapl",
-                      stockPrice: 173.93,
-                      MarketCap: 2778862.8,
-                      recomandedMetrics: {
-                        priceToErnings: 24.22913,
-                        priceTofcf: 22.026384999999998,
-                        discountRate: 8,
-                        growthRate: 7.4,
-                        terminalGrowthRate: 2,
-                      },
-                      historicalFinancials: [
-                        {
-                          year: 2018,
-                          netIncome: 59531,
-                          revenue: 265595,
-                          cashFromOperations: 77434,
-                          freeCashFlow: 64121,
-                        },
-                        {
-                          year: 2019,
-                          netIncome: 55256,
-                          revenue: 260174,
-                          cashFromOperations: 69391,
-                          freeCashFlow: 58896,
-                        },
-                        {
-                          year: 2020,
-                          netIncome: 57411,
-                          revenue: 274515,
-                          cashFromOperations: 80674,
-                          freeCashFlow: 73365,
-                        },
-                        {
-                          year: 2021,
-                          netIncome: 94680,
-                          revenue: 365817,
-                          cashFromOperations: 104038,
-                          freeCashFlow: 92953,
-                        },
-                        {
-                          year: 2022,
-                          netIncome: 99803,
-                          revenue: 394328,
-                          cashFromOperations: 122151,
-                          freeCashFlow: 111443,
-                        },
-                      ],
-                    }}
-                  />
-                }
-              />
+              <Route path="dcf" element={<DCFCalculator />} />
               <Route path="form">
                 <Route path=":symbol" element={<FormikWizardWrapper formSteps={formStep} />} />
               </Route>

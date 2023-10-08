@@ -1,12 +1,12 @@
 import { InputAdornment, TextField, TextFieldProps, Typography } from "@mui/material";
-import "../DcfCalculator.css";
+import "../../DcfCalculator.css";
 
 export interface FinencialResultsProps {
   markectCap: number;
-  estimateMarkectCap: number;
+  fairMarkectCap: number;
 }
-const FinencialResults = ({ markectCap, estimateMarkectCap }: FinencialResultsProps) => {
-  const seaftyMargin = (estimateMarkectCap - markectCap) / markectCap;
+const FinencialResults = ({ markectCap, fairMarkectCap }: FinencialResultsProps) => {
+  const seaftyMargin = ((fairMarkectCap - markectCap) / fairMarkectCap) * 100;
   return (
     <div>
       <Typography variant="h6">Financial Results</Typography>
@@ -18,7 +18,7 @@ const FinencialResults = ({ markectCap, estimateMarkectCap }: FinencialResultsPr
           inputAdornment="%"
           color={seaftyMargin <= 0 ? "error" : seaftyMargin >= 20 ? "success" : "warning"}
         />
-        <TextFieldWrapper label="Estimate Markect Cap" value={estimateMarkectCap} inputAdornment="$" />
+        <TextFieldWrapper label="Fair Markect Cap" value={fairMarkectCap} inputAdornment="$" />
       </div>
     </div>
   );

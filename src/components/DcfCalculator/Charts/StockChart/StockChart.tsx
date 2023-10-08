@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { stockPrice } from "../../../Entity/DcfValuationEntity";
-import CustomTick from "../../ChartSlider/Component/CustomTick ";
-import CoustomToolTipTimeStamp from "../../Common/CustomToolTip/CoustomToolTipTimeStamp";
-
+import { stockPrice } from "../../../../Entity/DcfValuationEntity";
+import { CustomTickTimeStamp } from "../../../Common/CustomTick/CustomTickTimeStamp ";
+import CoustomToolTipTimeStamp from "../../../Common/CustomToolTip/CoustomToolTipTimeStamp";
 interface StockPriceChartProps {
   stockPricesAllHistory: stockPrice[];
   stockPricesToday: stockPrice[];
@@ -45,7 +44,7 @@ const StockChart = ({ stockPricesAllHistory, estimatedStockPrice }: StockPriceCh
       <ResponsiveContainer width="100%" height="80%">
         <LineChart data={stockPricesChart} margin={{ top: 5, right: 20, bottom: 40, left: 0 }}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={CustomTick} type="number" scale="time" domain={["min", "auto"]} />
+          <XAxis dataKey="date" tick={CustomTickTimeStamp} type="number" scale="time" domain={["min", "auto"]} />
           <YAxis tick={{ fontSize: 15 }} domain={["auto", "auto"]} />
           <Tooltip content={<CoustomToolTipTimeStamp />} />
           <Line type="monotone" dataKey="close" stroke="#82ca9d" dot={false} strokeWidth={2} />

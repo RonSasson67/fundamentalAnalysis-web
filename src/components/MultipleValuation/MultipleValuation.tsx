@@ -17,7 +17,7 @@ import {
   SEFETY_MARGIN_PREFIX,
   WANTED_YIELD_RRETURN_PREFIX,
 } from "../../constants";
-import CustomTooltip from "../Common/CustomToolTip/CoustomToolTip";
+import CustomTooltip from "../Common/CustomToolTip/CustomToolTip";
 import "./MultipleValuation.css";
 
 type MultipleValuationChart = {

@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent";
 import lodash from "lodash";
 
-function CoustomToolTipTimeStamp({ payload, label, active }: TooltipProps<ValueType, NameType>) {
+function CustomToolTipTimeStamp({ payload, label, active }: TooltipProps<ValueType, NameType>) {
   if (active) {
     // return every item in the payload as a box with the keydata and value and the label in stroke color
     return (
@@ -38,4 +38,4 @@ function CoustomToolTipTimeStamp({ payload, label, active }: TooltipProps<ValueT
   }
   return null;
 }
-export default CoustomToolTipTimeStamp;
+export default CustomToolTipTimeStamp;
