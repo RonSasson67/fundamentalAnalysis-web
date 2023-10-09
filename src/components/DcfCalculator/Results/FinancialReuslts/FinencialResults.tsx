@@ -8,18 +8,16 @@ export interface FinencialResultsProps {
 const FinencialResults = ({ markectCap, fairMarkectCap }: FinencialResultsProps) => {
   const seaftyMargin = ((fairMarkectCap - markectCap) / fairMarkectCap) * 100;
   return (
-    <div>
+    <div className="dcf_results">
       <Typography variant="h6">Financial Results</Typography>
-      <div className="dcf_results">
-        <TextFieldWrapper label="Markect Cap" value={markectCap} inputAdornment="$" />
-        <TextFieldWrapper
-          label="Seafty Margin"
-          value={seaftyMargin}
-          inputAdornment="%"
-          color={seaftyMargin <= 0 ? "error" : seaftyMargin >= 20 ? "success" : "warning"}
-        />
-        <TextFieldWrapper label="Fair Markect Cap" value={fairMarkectCap} inputAdornment="$" />
-      </div>
+      <TextFieldWrapper label="Markect Cap" value={markectCap} inputAdornment="$" />
+      <TextFieldWrapper
+        label="Seafty Margin"
+        value={seaftyMargin}
+        inputAdornment="%"
+        color={seaftyMargin <= 0 ? "error" : seaftyMargin >= 20 ? "success" : "warning"}
+      />
+      <TextFieldWrapper label="Fair Markect Cap" value={fairMarkectCap} inputAdornment="$" />
     </div>
   );
 };

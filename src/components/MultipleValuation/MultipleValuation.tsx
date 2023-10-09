@@ -1,4 +1,4 @@
-import { FormControlLabel, InputAdornment, Switch, TextField } from "@mui/material";
+import { FormControlLabel, InputAdornment, Switch, TextField, Typography } from "@mui/material";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
@@ -38,6 +38,7 @@ const MultipleValuation = observer(() => {
   const [isAutocomplite, setIsAutocomplite] = useState(true);
   const [multipleChartValues, setMultipleChartValues] = useState<MultipleValuationChart[]>([]);
 
+  console.log("data", data);
   const setAutoComplite = (data: MultipleValuationEntity) => {
     setValue(EPS_PREFIX, parseFloat(data.eps.toFixed(2)));
     setValue(GROTH_RATE_PREFIX, data.GrowthRateInPrecent);
@@ -45,7 +46,7 @@ const MultipleValuation = observer(() => {
   };
 
   useEffect(() => {
-    if (data) {
+    if (data && !isLoading && !error) {
       if (isAutocomplite) {
         setAutoComplite(data as MultipleValuationEntity);
       }
@@ -98,7 +99,7 @@ const MultipleValuation = observer(() => {
   return (
     <div className="multiple-valuation">
       <div className="title">
-        <h1>MultipleValuation - {data?.symbol}</h1>
+        <Typography variant="h3">Multiple Valuation</Typography>
       </div>
       <div className="input-fields">
         <div className="text-inputs">

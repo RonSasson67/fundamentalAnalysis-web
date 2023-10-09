@@ -1,6 +1,6 @@
 import CheckBoxOutlineBlankTwoToneIcon from "@mui/icons-material/CheckBoxOutlineBlankTwoTone";
 import CheckBoxTwoToneIcon from "@mui/icons-material/CheckBoxTwoTone";
-import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow, TextField } from "@mui/material";
+import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
@@ -40,9 +40,9 @@ const TableWrapper = observer(({ metricsType }: TableWrapperProps) => {
   return (
     <div className="tabel-wrapper">
       <div className="title">
-        <h1>
+        <Typography variant="h3" component="div">
           {metricsType} - {symbol}
-        </h1>
+        </Typography>
       </div>
       <TableContainer className="tabel scroll-bar" component={Paper}>
         <Table stickyHeader aria-label="simple table">

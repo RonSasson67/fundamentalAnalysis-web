@@ -1,7 +1,8 @@
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import TimelineIcon from "@mui/icons-material/Timeline";
-import { BottomNavigation, BottomNavigationAction, Divider, Paper, Skeleton } from "@mui/material";
-import React, { useEffect } from "react";
+import { BottomNavigation, BottomNavigationAction, Divider, Paper, Skeleton, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { stockPrice } from "../../Entity/DcfValuationEntity";
 import useDcfValuation from "../../api/useDcfValuation";
 import FinencialChart, { FinencialMetricschartData } from "./Charts/FinencialChart/FinencialChart";
@@ -10,7 +11,6 @@ import "./DcfCalculator.css";
 import DcfInputs from "./DcfInputs/DcfInputs";
 import FinencialResults from "./Results/FinancialReuslts/FinencialResults";
 import StockResults from "./Results/StockResults/StockResults";
-import { set } from "lodash";
 
 interface EstimatedFinancials {
   year: number;
@@ -25,7 +25,11 @@ enum Charts {
 }
 
 const DCFCalculator = () => {
-  const { data, isLoading, isError } = useDcfValuation("PYPL");
+  const { getValues } = useFormContext();
+  const [symbol, _] = useState(getValues().symbol);
+
+  const { data, isLoading, isError } = useDcfValuation(symbol);
+
   const [selectedChart, setSelectedChart] = React.useState<Charts>(Charts.StockChart);
   const [finencialMetricsChartProps, setFinencialMetricsChartProps] = React.useState<FinencialMetricschartData[]>([]);
   const [fairMarketCapDependOnNetIncome, setFairMarketCapDependOnNetIncome] = React.useState<number>(0);
@@ -139,70 +143,75 @@ const DCFCalculator = () => {
   //reactor
   return (
     <div className="dcf">
-      <DcfInputs
-        stockPrice={data.stockPrice}
-        markectCap={data.MarketCap * 1000000}
-        numberOfYearsToProject={numberOfYearsToProject - 1}
-        numberOfYearsToProjectOnChange={(_, value) => {
-          if (value === null) return;
-          setNumberOfYearsToProject(parseInt(value) + 1);
-        }}
-        priceToErnings={data.recomandedMetrics.priceToErnings}
-        priceToErningsOnChange={() => {}}
-        priceTofcf={data.recomandedMetrics.priceTofcf}
-        priceTofcfOnChange={() => {}}
-        discountRate={data.recomandedMetrics.discountRate}
-        discountRateOnChange={() => {}}
-        growthRate={data.recomandedMetrics.growthRate}
-        growthRateOnChange={() => {}}
-        terminalGrowthRate={data.recomandedMetrics.terminalGrowthRate}
-        terminalGrowthRateOnChange={() => {}}
-      />
-      <Paper className="present_dcf" elevation={3} style={{ padding: "16px" }}>
-        <div className="choosing_charts">
-          <BottomNavigation
-            showLabels
-            value={selectedChart}
-            onChange={(_, newValue) => {
-              setSelectedChart(newValue);
-            }}
-          >
-            <BottomNavigationAction label="Stock Price" icon={<TimelineIcon />} value={Charts.StockChart} />
-            <BottomNavigationAction label="Financial Reports" icon={<ReceiptIcon />} value={Charts.FinencialMetricsChart} />
-          </BottomNavigation>
-        </div>
-        <Divider />
-        <div className="chart">
-          {
+      <div className="title">
+        <Typography variant="h3">Multiple Valuation</Typography>
+      </div>
+      <div className="dcf-logic">
+        <DcfInputs
+          stockPrice={data.stockPrice}
+          markectCap={data.MarketCap * 1000000}
+          numberOfYearsToProject={numberOfYearsToProject - 1}
+          numberOfYearsToProjectOnChange={(_, value) => {
+            if (value === null) return;
+            setNumberOfYearsToProject(parseInt(value) + 1);
+          }}
+          priceToErnings={data.recomandedMetrics.priceToErnings}
+          priceToErningsOnChange={() => {}}
+          priceTofcf={data.recomandedMetrics.priceTofcf}
+          priceTofcfOnChange={() => {}}
+          discountRate={data.recomandedMetrics.discountRate}
+          discountRateOnChange={() => {}}
+          growthRate={data.recomandedMetrics.growthRate}
+          growthRateOnChange={() => {}}
+          terminalGrowthRate={data.recomandedMetrics.terminalGrowthRate}
+          terminalGrowthRateOnChange={() => {}}
+        />
+        <Paper className="present_dcf" elevation={3} style={{ padding: "16px" }}>
+          <div className="choosing_charts">
+            <BottomNavigation
+              showLabels
+              value={selectedChart}
+              onChange={(_, newValue) => {
+                setSelectedChart(newValue);
+              }}
+            >
+              <BottomNavigationAction label="Stock Price" icon={<TimelineIcon />} value={Charts.StockChart} />
+              <BottomNavigationAction label="Financial Reports" icon={<ReceiptIcon />} value={Charts.FinencialMetricsChart} />
+            </BottomNavigation>
+          </div>
+          <Divider />
+          <div className="chart">
             {
-              [Charts.StockChart]: (
-                <StockChart
-                  stockPricesAllHistory={data.stockPricesAllHistory}
-                  stockPricesToday={data.stockPricesToday}
-                  estimatedStockPrice={estimatedStockPrice}
-                />
-              ),
-              [Charts.FinencialMetricsChart]: <FinencialChart chartData={finencialMetricsChartProps} />,
-            }[selectedChart]
-          }
-        </div>
-        <Divider />
-        <div className="dcf_results_section">
-          {
+              {
+                [Charts.StockChart]: (
+                  <StockChart
+                    stockPricesAllHistory={data.stockPricesAllHistory}
+                    stockPricesToday={data.stockPricesToday}
+                    estimatedStockPrice={estimatedStockPrice}
+                  />
+                ),
+                [Charts.FinencialMetricsChart]: <FinencialChart chartData={finencialMetricsChartProps} />,
+              }[selectedChart]
+            }
+          </div>
+          <Divider />
+          <div className="dcf_results_section">
             {
-              [Charts.StockChart]: (
-                <StockResults
-                  stockPrice={data.stockPrice}
-                  fairPrice={fairMarketCapDependOnNetIncome / (data.MarketCap / data.stockPrice)}
-                />
-              ),
-              [Charts.FinencialMetricsChart]: (
-                <FinencialResults markectCap={data.MarketCap} fairMarkectCap={fairMarketCapDependOnNetIncome} />
-              ),
-            }[selectedChart]
-          }
-        </div>
-      </Paper>
+              {
+                [Charts.StockChart]: (
+                  <StockResults
+                    stockPrice={data.stockPrice}
+                    fairPrice={fairMarketCapDependOnNetIncome / (data.MarketCap / data.stockPrice)}
+                  />
+                ),
+                [Charts.FinencialMetricsChart]: (
+                  <FinencialResults markectCap={data.MarketCap} fairMarkectCap={fairMarketCapDependOnNetIncome} />
+                ),
+              }[selectedChart]
+            }
+          </div>
+        </Paper>
+      </div>
     </div>
   );
 };

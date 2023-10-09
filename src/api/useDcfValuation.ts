@@ -8,7 +8,7 @@ const useDcfValuation = (symbol: string): UseQueryResult<DcfValuationEntity> => 
   const url = `${apiUrl}/valuation/dcf/${symbol}`;
 
   if (localStorage.getItem(symbol) !== null && localStorage.getItem(symbol) !== "undefined") {
-    return useQuery<DcfValuationEntity>(["symbol", symbol], () => {
+    return useQuery<DcfValuationEntity>(["dcf", symbol], () => {
       return JSON.parse(localStorage.getItem(symbol) as string);
     });
   }

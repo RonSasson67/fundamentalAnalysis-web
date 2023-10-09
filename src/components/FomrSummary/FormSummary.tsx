@@ -69,7 +69,9 @@ const FormSummary = () => {
   return (
     <div className="finance-container">
       <div className="title">
-        <h2>{data.symbol} Finance Data</h2>
+        <Typography variant="h4" component="div">
+          {data.symbol} Finance Data
+        </Typography>
       </div>
       <div className="catagory_list scroll-bar">
         {Object.keys(data.metrics).map((category) => (
