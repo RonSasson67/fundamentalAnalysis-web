@@ -17,7 +17,7 @@ function CustomToolTipTimeStamp({ payload, label, active }: TooltipProps<ValueTy
         }}
       >
         <Typography variant="body2" color="text.secondary">
-          {new Date(label * 1000).toISOString().slice(0, 10)}
+          {new Date(label).toISOString().slice(0, 10)}
         </Typography>
         {payload?.map((item, index) => (
           <Typography key={index} variant="body2" color={item.color} sx={{ display: "flex", alignItems: "center" }}>

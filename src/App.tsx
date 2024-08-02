@@ -45,10 +45,6 @@ const Layot = () => {
 
 const formStep: FormStep[] = [
   {
-    step: { component: () => <DCFCalculator /> },
-    stepName: "DCF",
-  },
-  {
     step: { component: () => <TabelWrapper metricsType={MetricsType.General} /> },
     stepName: "General",
   },
@@ -71,6 +67,10 @@ const formStep: FormStep[] = [
   {
     step: { component: () => <MultipleValuation /> },
     stepName: "Multiple Valuation",
+  },
+  {
+    step: { component: () => <DCFCalculator /> },
+    stepName: "DCF",
   },
 ];
 

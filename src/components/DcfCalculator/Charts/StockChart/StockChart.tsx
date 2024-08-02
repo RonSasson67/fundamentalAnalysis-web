@@ -5,7 +5,6 @@ import { CustomTickTimeStamp } from "../../../Common/CustomTick/CustomTickTimeSt
 import CoustomToolTipTimeStamp from "../../../Common/CustomToolTip/CoustomToolTipTimeStamp";
 interface StockPriceChartProps {
   stockPricesAllHistory: stockPrice[];
-  stockPricesToday: stockPrice[];
   estimatedStockPrice: stockPrice[];
 }
 
@@ -21,20 +20,10 @@ const StockChart = ({ stockPricesAllHistory, estimatedStockPrice }: StockPriceCh
 
   useEffect(() => {
     if (stockPricesAllHistory.length > 0) {
-      const stockPricesChart: StockPriceChart[] = SetFilterStockPrice(stockPricesChartRange, stockPricesAllHistory).map(
-        (value) => {
-          return {
-            date: value.date,
-            close: value.close,
-          };
-        }
+      const stockPricesChart = SetFilterStockPrice(stockPricesChartRange, stockPricesAllHistory).map((value) =>
+        transformStockPrice(value)
       );
-      const estimatedStockPricesChart: StockPriceChart[] = estimatedStockPrice.map((value) => {
-        return {
-          date: value.date,
-          estimated: value.close,
-        };
-      });
+      const estimatedStockPricesChart = estimatedStockPrice.map((value) => transformStockPrice(value, true));
       setStockPricesChart(stockPricesChart.concat(estimatedStockPricesChart));
     }
   }, [stockPricesAllHistory, estimatedStockPrice, stockPricesChartRange]);
@@ -66,4 +55,12 @@ const SetFilterStockPrice = (stockPricesChartRange: number, stockPricesAllHistor
     return date.getTime() >= chosingYearsAgo.getTime();
   });
   return stockPricesChart;
+};
+
+// Define the transformation function
+const transformStockPrice = (value: stockPrice, isEstimated = false) => {
+  return {
+    date: value.date,
+    [isEstimated ? "estimated" : "close"]: value.close,
+  };
 };

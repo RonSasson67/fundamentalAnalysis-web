@@ -7,9 +7,7 @@ interface DcfInputsProps {
   numberOfYearsToProject: number;
   numberOfYearsToProjectOnChange: (event: any, value: string | null) => void;
   priceToErnings: number;
-  priceToErningsOnChange: (event: { target: { name: string; value: string } }) => void;
   priceTofcf: number;
-  priceTofcfOnChange: (event: { target: { name: string; value: string } }) => void;
   discountRate: number;
   discountRateOnChange: (event: { target: { name: string; value: string } }) => void;
   growthRate: number;
@@ -23,9 +21,7 @@ const DcfInputs = ({
   numberOfYearsToProject,
   numberOfYearsToProjectOnChange,
   priceToErnings,
-  priceToErningsOnChange,
   priceTofcf,
-  priceTofcfOnChange,
   discountRate,
   discountRateOnChange,
   growthRate,
@@ -49,16 +45,8 @@ const DcfInputs = ({
         )}
         onChange={numberOfYearsToProjectOnChange}
       />
-      <TextFieldFormatNumber
-        onChange={priceToErningsOnChange}
-        label="Price to Earnings Ratio"
-        value={priceToErnings}
-      ></TextFieldFormatNumber>
-      <TextFieldFormatNumber
-        onChange={priceTofcfOnChange}
-        label="Price to Free Cash Flow Ratio"
-        value={priceTofcf}
-      ></TextFieldFormatNumber>
+      <TextFieldFormatNumberNoChange label="Price to Earnings Ratio" value={priceToErnings}></TextFieldFormatNumberNoChange>
+      <TextFieldFormatNumberNoChange label="Price to Free Cash Flow Ratio" value={priceTofcf}></TextFieldFormatNumberNoChange>
       <TextFieldFormatNumber
         onChange={discountRateOnChange}
         label="Discount Rate"

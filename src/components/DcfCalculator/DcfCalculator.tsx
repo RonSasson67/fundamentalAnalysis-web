@@ -35,9 +35,23 @@ const DCFCalculator = () => {
   const [fairMarketCapDependOnNetIncome, setFairMarketCapDependOnNetIncome] = React.useState<number>(0);
   const [estimatedStockPrice, setEstimatedStockPrice] = React.useState<stockPrice[]>([]);
   const [numberOfYearsToProject, setNumberOfYearsToProject] = React.useState<number>(6);
+  const [priceToErnings, setPriceToErnings] = React.useState<number>(0);
+  const [priceTofcf, setPriceTofcf] = React.useState<number>(0);
+  const [discountRate, setDiscountRate] = React.useState<number>(0);
+  const [growthRate, setGrowthRate] = React.useState<number>(0);
+  const [terminalGrowthRate, setTerminalGrowthRate] = React.useState<number>(0);
 
   useEffect(() => {
     if (data === undefined) return;
+
+    if (priceToErnings === 0) {
+      // it bad but I am lazy
+      setPriceToErnings(data.recomandedMetrics.priceToErnings);
+      setPriceTofcf(data.recomandedMetrics.priceTofcf);
+      setDiscountRate(data.recomandedMetrics.discountRate);
+      setGrowthRate(data.recomandedMetrics.growthRate);
+      setTerminalGrowthRate(data.recomandedMetrics.terminalGrowthRate);
+    }
 
     const avrageNetIncomeToFcf =
       data.historicalFinancials
@@ -52,9 +66,9 @@ const DCFCalculator = () => {
       (_, i) => {
         const year = firstHistoricalYear + i + 1;
         const lastYearNetIncome = data.historicalFinancials[lastYearIndex].netIncome;
-        const netIncome = lastYearNetIncome * Math.pow(1 + data.recomandedMetrics.growthRate / 100, i + 1);
+        const netIncome = lastYearNetIncome * Math.pow(1 + growthRate / 100, i + 1);
         const freeCashFlow = netIncome / avrageNetIncomeToFcf;
-        const freeCashFlowCapitalize = freeCashFlow / Math.pow(1 + data.recomandedMetrics.discountRate / 100, i + 1);
+        const freeCashFlowCapitalize = freeCashFlow / Math.pow(1 + discountRate / 100, i + 1);
         return {
           year: year,
           netIncome: netIncome,
@@ -66,9 +80,9 @@ const DCFCalculator = () => {
 
     const intrinsicValueDependOnNetIncome =
       (estimatedFinancialsDependOnNetIncome[estimatedFinancialsDependOnNetIncome.length - 1].freeCashFlowCapitalize *
-        (1 + data.recomandedMetrics.terminalGrowthRate / 100)) /
-      (data.recomandedMetrics.discountRate / 100 - data.recomandedMetrics.terminalGrowthRate / 100) /
-      Math.pow(1 + data.recomandedMetrics.discountRate / 100, 6);
+        (1 + terminalGrowthRate / 100)) /
+      (discountRate / 100 - terminalGrowthRate / 100) /
+      Math.pow(1 + discountRate / 100, 6);
 
     const fairMarketCapDependOnNetIncome =
       estimatedFinancialsDependOnNetIncome.reduce((acc, value) => acc + value.freeCashFlowCapitalize, 0) +
@@ -93,13 +107,19 @@ const DCFCalculator = () => {
         })
       );
 
+    // Create a Date object from the timestamp
+    const date = new Date(data.stockPricesAllHistory[data.stockPricesAllHistory.length - 1].date);
+
+    // Add the specified number of years
+    date.setFullYear(date.getFullYear() + numberOfYearsToProject);
+
     const estimatedStockPrice = [
       {
         date: data.stockPricesAllHistory[data.stockPricesAllHistory.length - 1].date,
         close: data.stockPricesAllHistory[data.stockPricesAllHistory.length - 1].close,
       },
       {
-        date: data.stockPricesAllHistory[data.stockPricesAllHistory.length - 1].date + 86400,
+        date: date.getTime(),
         close: fairMarketCapDependOnNetIncome / (data.MarketCap / data.stockPrice),
       },
     ];
@@ -107,7 +127,7 @@ const DCFCalculator = () => {
     setFairMarketCapDependOnNetIncome(fairMarketCapDependOnNetIncome);
     setFinencialMetricsChartProps(FinencialMetricsChartProps);
     setEstimatedStockPrice(estimatedStockPrice);
-  }, [data, numberOfYearsToProject]);
+  }, [data, numberOfYearsToProject, priceToErnings, priceTofcf, discountRate, growthRate, terminalGrowthRate]);
 
   //insert skeleton loader
   if (isLoading)
@@ -140,31 +160,34 @@ const DCFCalculator = () => {
     );
 
   if (isError || data === undefined) return <>Error</>;
-  //reactor
   return (
     <div className="dcf">
       <div className="title">
-        <Typography variant="h3">Multiple Valuation</Typography>
+        <Typography variant="h3">DCF - {symbol}</Typography>
       </div>
       <div className="dcf-logic">
         <DcfInputs
           stockPrice={data.stockPrice}
           markectCap={data.MarketCap * 1000000}
-          numberOfYearsToProject={numberOfYearsToProject - 1}
+          numberOfYearsToProject={numberOfYearsToProject}
           numberOfYearsToProjectOnChange={(_, value) => {
             if (value === null) return;
-            setNumberOfYearsToProject(parseInt(value) + 1);
+            setNumberOfYearsToProject(parseInt(value));
           }}
-          priceToErnings={data.recomandedMetrics.priceToErnings}
-          priceToErningsOnChange={() => {}}
-          priceTofcf={data.recomandedMetrics.priceTofcf}
-          priceTofcfOnChange={() => {}}
-          discountRate={data.recomandedMetrics.discountRate}
-          discountRateOnChange={() => {}}
-          growthRate={data.recomandedMetrics.growthRate}
-          growthRateOnChange={() => {}}
-          terminalGrowthRate={data.recomandedMetrics.terminalGrowthRate}
-          terminalGrowthRateOnChange={() => {}}
+          priceToErnings={priceToErnings}
+          priceTofcf={priceTofcf}
+          discountRate={discountRate}
+          discountRateOnChange={(event) => {
+            setDiscountRate(Number(event.target.value));
+          }}
+          growthRate={growthRate}
+          growthRateOnChange={(event) => {
+            setGrowthRate(Number(event.target.value));
+          }}
+          terminalGrowthRate={terminalGrowthRate}
+          terminalGrowthRateOnChange={(event) => {
+            setTerminalGrowthRate(Number(event.target.value));
+          }}
         />
         <Paper className="present_dcf" elevation={3} style={{ padding: "16px" }}>
           <div className="choosing_charts">
@@ -184,11 +207,7 @@ const DCFCalculator = () => {
             {
               {
                 [Charts.StockChart]: (
-                  <StockChart
-                    stockPricesAllHistory={data.stockPricesAllHistory}
-                    stockPricesToday={data.stockPricesToday}
-                    estimatedStockPrice={estimatedStockPrice}
-                  />
+                  <StockChart stockPricesAllHistory={data.stockPricesAllHistory} estimatedStockPrice={estimatedStockPrice} />
                 ),
                 [Charts.FinencialMetricsChart]: <FinencialChart chartData={finencialMetricsChartProps} />,
               }[selectedChart]

@@ -21,7 +21,7 @@ export const CustomTickTimeStamp = ({ x, y, payload }: CustomTickProps) => {
           height: "auto",
         }}
       >
-        {new Date(payload.value * 1000).toISOString().slice(0, 10)}
+        {new Date(payload.value).toISOString().slice(0, 10)}
       </text>
     </g>
   );

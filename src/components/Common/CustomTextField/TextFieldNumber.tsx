@@ -6,6 +6,7 @@ interface TextFieldNumberProps {
   label: string;
   value: number;
   startAdornment?: string;
+  readOnly?: boolean;
 }
 
 export const TextFieldFormatNumber = (props: TextFieldNumberProps) => {
@@ -17,9 +18,10 @@ export const TextFieldFormatNumber = (props: TextFieldNumberProps) => {
   return (
     <TextField
       id="outlined-basic"
+      type="number"
       label={props.label}
       variant="outlined"
-      value={props.value.toLocaleString()}
+      value={typeof props.value === "number" ? props.value.toLocaleString() : "Server error"}
       InputProps={{
         ...startAdornment,
       }}

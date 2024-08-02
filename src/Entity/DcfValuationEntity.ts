@@ -5,7 +5,6 @@ export type DcfValuationEntity = {
   recomandedMetrics: RecomandedMetrics;
   historicalFinancials: HistoricalFinancial[];
   stockPricesAllHistory: stockPrice[];
-  stockPricesToday: stockPrice[];
 };
 
 export type HistoricalFinancial = {
