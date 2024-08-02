@@ -53,17 +53,17 @@ interface SummaryFinanceData {
 }
 
 const FormSummary = () => {
-  let { state } = useLocation();
-  let data: SummaryFinanceData | undefined;
+  const { state } = useLocation();
+  const [data, setData] = useState<SummaryFinanceData | undefined>(undefined);
 
   useState(() => {
     if (state) {
-      data = state;
+      setData(state);
     }
   });
 
-  if (!data || !!!state) {
-    return <div>Something went wrong: {(data as any).message}</div>;
+  if (!data) {
+    return <div>Something went wrong</div>;
   }
 
   return (
