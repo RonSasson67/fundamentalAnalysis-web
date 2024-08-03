@@ -18,7 +18,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import TabelHeadCoustom from "../Common/TableHeadCoustom/TabelHeadCoustom";
+import TabelHeadCoustom from "../Common/CustomTableHead/CustomTabelHead";
 import "./FormSummary.css";
 import SecurityIcon from "@mui/icons-material/Security";
 import { useLocation } from "react-router-dom";
@@ -52,27 +52,26 @@ interface SummaryFinanceData {
   };
 }
 
-interface SummaryFinanceDataProps {
-  data: SummaryFinanceData;
-}
-
-const FormSummary = ({ data }: SummaryFinanceDataProps) => {
-  let { state } = useLocation();
+const FormSummary = () => {
+  const { state } = useLocation();
+  const [data, setData] = useState<SummaryFinanceData | undefined>(undefined);
 
   useState(() => {
     if (state) {
-      data = state;
+      setData(state);
     }
   });
 
-  if (!data || !!!state) {
-    return <div>Something went wrong: {(data as any).message}</div>;
+  if (!data) {
+    return <div>Something went wrong</div>;
   }
 
   return (
     <div className="finance-container">
       <div className="title">
-        <h2>{data.symbol} Finance Data</h2>
+        <Typography variant="h4" component="div">
+          {data.symbol} Finance Data
+        </Typography>
       </div>
       <div className="catagory_list scroll-bar">
         {Object.keys(data.metrics).map((category) => (

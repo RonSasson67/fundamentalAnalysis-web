@@ -1,9 +1,9 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
 import BalanceTwoToneIcon from "@mui/icons-material/BalanceTwoTone";
 import FlakyTwoToneIcon from "@mui/icons-material/FlakyTwoTone";
 import SpeakerNotesTwoToneIcon from "@mui/icons-material/SpeakerNotesTwoTone";
+import { TableCell, TableHead, TableRow } from "@mui/material";
 
-const TabelHeadCoustom = () => {
+const CustomTabelHead = () => {
   return (
     <TableHead>
       <TableRow>
@@ -22,4 +22,4 @@ const TabelHeadCoustom = () => {
   );
 };
 
-export default TabelHeadCoustom;
+export default CustomTabelHead;

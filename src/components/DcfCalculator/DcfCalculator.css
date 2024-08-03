@@ -1,0 +1,58 @@
+.dcf {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dcf-logic {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.inputs {
+  height: 80%;
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.present_dcf {
+  height: 80%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.choosing_charts {
+  height: 10%;
+}
+
+.chart {
+  height: 100%;
+}
+
+.dcf_results_section {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 15%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.dcf_results {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}

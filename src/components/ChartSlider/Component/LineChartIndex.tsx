@@ -1,8 +1,8 @@
 import { observer } from "mobx-react";
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import ChartIndexStore from "../../../Store/ChartIndexStore";
-import CustomTooltip from "./CoustomToolTip";
-import CustomTick from "./CustomTick ";
+import { CustomTick } from "../../Common/CustomTick/CustomTick";
+import CustomTooltip from "../../Common/CustomToolTip/CustomToolTip";
 
 type ChartLineProps = {
   chartIndexStore: ChartIndexStore;
@@ -45,29 +45,26 @@ const LineChartIndex = observer(({ chartIndexStore }: ChartLineProps) => {
     "#B34D4D",
   ];
   return (
-    <LineChart
-      width={800}
-      height={400}
-      data={chartIndexStore.getIndexData}
-      margin={{ top: 5, right: 20, bottom: 40, left: 0 }}
-    >
-      <CartesianGrid vertical={false} strokeDasharray="3 3" />
-      <XAxis dataKey="date" tick={CustomTick} />
-      <YAxis tick={{ fontSize: 15 }} />
-      <Tooltip content={<CustomTooltip />} />
-      {GetDataKey(chartIndexStore.getIndexData).map((dataKey, index) => {
-        return (
-          <Line
-            type="monotone"
-            dataKey={dataKey}
-            stroke={barColors[index % barColors.length]}
-            dot={false}
-            strokeWidth={2}
-            key={index}
-          />
-        );
-      })}
-    </LineChart>
+    <ResponsiveContainer width="100%" height="80%">
+      <LineChart data={chartIndexStore.getIndexData} margin={{ top: 5, right: 20, bottom: 40, left: 0 }}>
+        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+        <XAxis dataKey="date" tick={CustomTick} />
+        <YAxis tick={{ fontSize: 15 }} />
+        <Tooltip content={<CustomTooltip />} />
+        {GetDataKey(chartIndexStore.getIndexData).map((dataKey, index) => {
+          return (
+            <Line
+              type="monotone"
+              dataKey={dataKey}
+              stroke={barColors[index % barColors.length]}
+              dot={false}
+              strokeWidth={2}
+              key={index}
+            />
+          );
+        })}
+      </LineChart>
+    </ResponsiveContainer>
   );
 });
 

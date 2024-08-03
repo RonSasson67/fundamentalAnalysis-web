@@ -1,8 +1,8 @@
-import { FormControlLabel, InputAdornment, Switch, TextField } from "@mui/material";
+import { FormControlLabel, InputAdornment, Switch, TextField, Typography } from "@mui/material";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { MultipleValuationEntity } from "../../Entity/MultipleValuationResponse";
 import useMultipleValuation from "../../api/useMultipleValuation";
 import {
@@ -17,9 +17,8 @@ import {
   SEFETY_MARGIN_PREFIX,
   WANTED_YIELD_RRETURN_PREFIX,
 } from "../../constants";
-import CustomTooltip from "../ChartSlider/Component/CoustomToolTip";
+import CustomTooltip from "../Common/CustomToolTip/CustomToolTip";
 import "./MultipleValuation.css";
-import RowGrids from "./RowGrids/RowGrids";
 
 type MultipleValuationChart = {
   Year: string;
@@ -39,6 +38,7 @@ const MultipleValuation = observer(() => {
   const [isAutocomplite, setIsAutocomplite] = useState(true);
   const [multipleChartValues, setMultipleChartValues] = useState<MultipleValuationChart[]>([]);
 
+  console.log("data", data);
   const setAutoComplite = (data: MultipleValuationEntity) => {
     setValue(EPS_PREFIX, parseFloat(data.eps.toFixed(2)));
     setValue(GROTH_RATE_PREFIX, data.GrowthRateInPrecent);
@@ -46,7 +46,7 @@ const MultipleValuation = observer(() => {
   };
 
   useEffect(() => {
-    if (data) {
+    if (data && !isLoading && !error) {
       if (isAutocomplite) {
         setAutoComplite(data as MultipleValuationEntity);
       }
@@ -99,18 +99,10 @@ const MultipleValuation = observer(() => {
   return (
     <div className="multiple-valuation">
       <div className="title">
-        <h1>MultipleValuation - {data?.symbol}</h1>
+        <Typography variant="h3">Multiple Valuation</Typography>
       </div>
       <div className="input-fields">
         <div className="text-inputs">
-          <Controller
-            name={EPS_PREFIX}
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <TextField disabled={true} type="number" id="outlined-basic" label="EPS" variant="outlined" {...field} />
-            )}
-          />
           <Controller
             name={GROTH_RATE_PREFIX}
             control={control}
@@ -130,6 +122,7 @@ const MultipleValuation = observer(() => {
           />
           <Controller
             name={PE_PREFIX}
+            defaultValue={0}
             control={control}
             render={({ field }) => (
               <TextField
@@ -144,6 +137,7 @@ const MultipleValuation = observer(() => {
           />
           <Controller
             name={NUMBER_OF_YEARS_TO_PROJECT_PREFIX}
+            defaultValue={DEFULT_NUMBER_OF_YEATS}
             control={control}
             render={({ field }) => (
               <TextField type="number" id="outlined-basic" label="Number of Years To Project" variant="outlined" {...field} />
@@ -166,8 +160,6 @@ const MultipleValuation = observer(() => {
               />
             )}
           />
-        </div>
-        <div className="autocomplite">
           <FormControlLabel
             control={
               <Switch
@@ -182,35 +174,18 @@ const MultipleValuation = observer(() => {
           />
         </div>
       </div>
-      <div className="charts">
-        <div className="chart">
-          <div className="title">
-            <h2>StockPrice</h2>
-          </div>
-          <LineChart width={525} height={250} data={multipleChartValues}>
+      <div className="chart">
+        <ResponsiveContainer width="95%" height="80%">
+          <LineChart data={multipleChartValues}>
             <Tooltip content={<CustomTooltip />} />
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis dataKey="Year" />
             <YAxis yAxisId="StockPrice" tick={{ fontSize: 15 }} />
             <Line yAxisId="StockPrice" type="monotone" dataKey={"StockPrice"} stroke={"#99FF99"} dot={false} strokeWidth={2} />
           </LineChart>
-          <RowGrids values={multipleChartValues.map((values) => `${values.StockPrice}$`)} />
-        </div>
-        <div className="chart">
-          <div className="title">
-            <h2>EPS</h2>
-          </div>
-          <LineChart width={525} height={250} data={multipleChartValues}>
-            <Tooltip content={<CustomTooltip />} />
-            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-            <XAxis dataKey="Year" />
-            <YAxis yAxisId="EPS" tick={{ fontSize: 15 }} />
-            <Line yAxisId="EPS" type="monotone" dataKey={"EPS"} stroke={"#99FF99"} dot={false} strokeWidth={2} />
-          </LineChart>
-          <RowGrids values={multipleChartValues.map((values) => values.EPS)} />
-        </div>
+        </ResponsiveContainer>
       </div>
-      <div className="charts results">
+      <div className="results">
         <Controller
           name={CURRENT_PRICE_PREFIX}
           control={control}
