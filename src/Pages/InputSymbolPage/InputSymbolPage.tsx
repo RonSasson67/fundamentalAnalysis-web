@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import { ResultSymbol, getSymbolSearch } from "../../api/getSymbolSearch";
 import "./InputSymbolPage.css";
+import { Grow } from "@mui/material";
 
 const urlToNavigate = "/form";
 
@@ -44,21 +45,23 @@ export default function Asynchronous() {
   );
 
   return (
-    <div className="input-page">
-      <Autocomplete
-        className="input-symbol"
-        id="asynchronous-demo"
-        isOptionEqualToValue={(option, value) => option.name === value.name || option.symbol === value.symbol}
-        getOptionLabel={(option) => `${option.name} (${option.symbol})`}
-        options={data || []}
-        loading={loading}
-        renderInput={InoutText}
-        onChange={(_: any, value: ResultSymbol | null) => {
-          if (value) {
-            navigate(`${urlToNavigate}/${value.symbol}`);
-          }
-        }}
-      />
-    </div>
+    <Grow in={true} timeout={1000}>
+      <div className="input-page">
+        <Autocomplete
+          className="input-symbol"
+          id="asynchronous-demo"
+          isOptionEqualToValue={(option, value) => option.name === value.name || option.symbol === value.symbol}
+          getOptionLabel={(option) => `${option.name} (${option.symbol})`}
+          options={data || []}
+          loading={loading}
+          renderInput={InoutText}
+          onChange={(_: any, value: ResultSymbol | null) => {
+            if (value) {
+              navigate(`${urlToNavigate}/${value.symbol}`);
+            }
+          }}
+        />
+      </div>
+    </Grow>
   );
 }

@@ -1,6 +1,6 @@
 import CheckBoxOutlineBlankTwoToneIcon from "@mui/icons-material/CheckBoxOutlineBlankTwoTone";
 import CheckBoxTwoToneIcon from "@mui/icons-material/CheckBoxTwoTone";
-import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow, TextField } from "@mui/material";
+import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import MetricsType from "../../Entity/MetricsType.tsx";
 import { useGetMetricData } from "../../api/MetricsApi.tsx";
 import { METRICS_CHECKBOX, METRICS_NOTE, METRICS_PREFIX, NUMBER_OF_COLUMS, VALUE } from "../../constants.ts";
 import "./TabelWrapper.css";
-import TabelHeadCoustom from "../Common/TableHeadCoustom/TabelHeadCoustom.tsx";
+import TabelHeadCoustom from "../Common/CustomTableHead/CustomTabelHead.tsx";
 import "../../Utils/Utils.css";
 
 interface TableWrapperProps {
@@ -40,9 +40,9 @@ const TableWrapper = observer(({ metricsType }: TableWrapperProps) => {
   return (
     <div className="tabel-wrapper">
       <div className="title">
-        <h1>
+        <Typography variant="h3" component="div">
           {metricsType} - {symbol}
-        </h1>
+        </Typography>
       </div>
       <TableContainer className="tabel scroll-bar" component={Paper}>
         <Table stickyHeader aria-label="simple table">
